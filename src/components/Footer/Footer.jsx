@@ -4,7 +4,7 @@ import './footer.css';
 const Footer = () => {
   return (
     <Box className="footer">
-      <Typography component="p">Just for KLTN</Typography>
+      <Typography component="p">Student dormitory management system</Typography>
     </Box>
   );
 };

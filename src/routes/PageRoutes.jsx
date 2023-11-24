@@ -1,43 +1,68 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import HomePage from '../pages/HomePage'
-import Loader from '../components/Loading/Loading'
-import Login from '../Validate/Login'
-import Logout from '../Validate/Logout'
-
-// Lasy load to import the Pages
-const Menu =React.lazy(()=>import('../pages/MenuPage'))
-const Booking =React.lazy(()=>import('../pages/BookingPage'))
-const Orders =React.lazy(()=>import('../pages/Orders'))
-const OrderDetail =React.lazy(()=>import('../pages/OrderDetail'))
-const Table =React.lazy(()=>import('../pages/TablePage'))
-const TableDetail =React.lazy(()=>import('../pages/TableDetail'))
-
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Loader from '../components/Loading/Loading';
+import { adminRoutes, authRoutes, publicRoutes } from './routes';
+import NavBar from 'components/Header/NavBar';
+import Footer from 'components/Footer/Footer';
+import AdminSidebar from 'components/AdminSidebar';
 
 const PageRoutes = () => {
   return (
-    <React.Suspense fallback={<Loader/>}>
-    <Routes>
-      {/* Home Page*/}
-      <Route path='/' element={<HomePage/>} />
-      <Route path='home' element={<HomePage/>} />
-      {/* Menu Page*/}
-      <Route path='menu' element={<Menu/>} />
-      {/* Booking Page*/}
-      <Route path='booking' element={<Booking/>} />
-      {/* Order Page*/}
-      <Route path='orders' element={<Orders/>} />
-      <Route path='orders/:id' element={<OrderDetail/>} />
-      {/* Table Page*/}
-      <Route path='table-overview' element={<Table/>} />
-      <Route path='table-overview/:id' element={<TableDetail/>} />
+    <React.Suspense fallback={<Loader />}>
+      <Routes>
+        {publicRoutes.map((route, index) => {
+          const Page = route.component;
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <>
+                  <NavBar />
+                  <Page />
+                  <Footer />
+                </>
+              }
+            />
+          );
+        })}
 
-      {/* Authentication Page*/}
-      <Route path='login' element={<Login/>} />
-      <Route path='logout' element={<Logout/>} />
-    </Routes>
+        {/* Authentication Page*/}
+        {authRoutes.map((route, index) => {
+          const Page = route.component;
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <>
+                  <Page />
+                </>
+              }
+            />
+          );
+        })}
+
+        {adminRoutes.map((route, index) => {
+          const Page = route.component;
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <div className="flex min-h-screen">
+                  <AdminSidebar />
+                  <div className="w-4/5">
+                    <Page />
+                  </div>
+                </div>
+              }
+            />
+          );
+        })}
+      </Routes>
     </React.Suspense>
-  )
-}
+  );
+};
 
-export default PageRoutes
+export default PageRoutes;
