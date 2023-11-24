@@ -1,10 +1,10 @@
-import React from 'react'
-import Layout from './routes/Layout'
-import { ToastContainer } from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css";
-import AuthContext from './Validate/AuthContext'
+import React from 'react';
+import Layout from './routes/Layout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AuthContext from './Validate/AuthContext';
 
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 const clientQuery = new QueryClient();
 const App = () => {
   return (
@@ -12,7 +12,6 @@ const App = () => {
       <ToastContainer
         autoClose={3000}
         style={{ width: 250 }}
-        position="bottom-left"
         hideProgressBar={false}
         pauseOnFocusLoss={false}
         draggable={false}
@@ -24,7 +23,7 @@ const App = () => {
         <Layout />
       </AuthContext>
     </QueryClientProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

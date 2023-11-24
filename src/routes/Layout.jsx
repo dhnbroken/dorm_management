@@ -1,17 +1,12 @@
-import React from 'react'
-import Footer from '../components/Footer/Footer'
-import NavBar from '../components/Header/NavBar'
-import PageRoutes from './PageRoutes'
-
+import React from 'react';
+import PageRoutes from './PageRoutes';
 
 const Layout = () => {
   return (
     <>
-    <NavBar/>
-    <PageRoutes/>
-    <Footer/>
+      <PageRoutes />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
