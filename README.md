@@ -1,8 +1,4 @@
-# Restaurant Management System
-
-Live Code : https://codx-restaurant.netlify.app/
-
-
+# Dorm Management System
 
 # Getting Started with Create React App
 
