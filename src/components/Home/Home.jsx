@@ -6,13 +6,10 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <Box className="content">
-      <Typography component="h6" variant="h6">
-        Satisfy Your Cravings
-      </Typography>
       <Typography component="h2" variant="h2">
-        Delicious Foods With Wonderful Eating
+        Ký túc xá Sinh viên số 1 thế giới
       </Typography>
-      <Typography component="p">Where Every Bite Tells a Delicious Story!</Typography>
+      <Typography component="p">Nơi nuôi dưỡng giấc mơ của sinh viên</Typography>
       <Link to="/login">
         <Button variant="contained" type="button">
           Đăng nhập ngay

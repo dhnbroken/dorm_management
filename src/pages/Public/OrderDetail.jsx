@@ -1,10 +1,10 @@
 import { Box, Button, Card,Typography } from '@mui/material'
 import React  from 'react'
 import {useNavigate, useParams} from "react-router-dom";
-import '../components/OrderCard/orderDetail.css'
-import { BookingUpdate, TableFilterById } from '../API/Table';
+import 'components/OrderCard/orderDetail.css'
+import { BookingUpdate, TableFilterById } from 'API/Table';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Loader from '../components/Loading/Loading'
+import Loader from 'components/Loading/Loading'
 import { toast } from 'react-toastify';
 
 const OrderDetail = () => {

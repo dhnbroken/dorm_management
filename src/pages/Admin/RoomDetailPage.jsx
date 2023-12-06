@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import ProfileCard from 'components/ProfileCard';
 
 const people = [
   {
@@ -42,26 +43,21 @@ const people = [
 export default function RoomDetailPage() {
   const { id } = useParams();
   return (
-    <div className="bg-white py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl sm:text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Phòng {id}</h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">Danh sách sinh viên</p>
-        </div>
-        <ul className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-6 gap-y-20 sm:grid-cols-2 lg:max-w-4xl lg:gap-x-8 xl:max-w-none">
-          {people.map((person) => (
-            <li key={person.id} className="flex flex-col gap-6 xl:flex-row">
-              <img className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover" src={person.imageUrl} alt="" />
-              <div className="flex-auto">
-                <h3 className="text-lg font-semibold leading-8 tracking-tight text-gray-900">{person.name}</h3>
-                <p className="text-base leading-7 text-gray-600">{person.university}</p>
-                <p className="mt-2 text-base leading-7 text-gray-600">MSSV: {person.citizenId}</p>
-                <p className="text-base leading-7 text-gray-600">MSSV: {person.studentId}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+    <div className="p-8">
+      <div className="mx-auto max-w-2xl sm:text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Phòng {id}</h2>
+        <p className="my-2 text-lg leading-8 text-gray-600">Danh sách sinh viên</p>
       </div>
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {people.map((person) => (
+          <li
+            key={person.id}
+            className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow"
+          >
+            <ProfileCard person={person} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
