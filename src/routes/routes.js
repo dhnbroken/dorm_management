@@ -1,29 +1,40 @@
-import AdminDashboardPage from 'pages/AdminDashboardPage';
+// Common
 import HomePage from 'pages/HomePage';
-import RoomDetailPage from 'pages/RoomDetailPage';
-import RoomListPage from 'pages/RoomListPage';
-import SignupPage from 'pages/SignupPage';
+
+// Admin
+import AdminDashboardPage from 'pages/Admin/AdminDashboardPage';
+import RoomDetailPage from 'pages/Admin/RoomDetailPage';
+import RoomListPage from 'pages/Admin/RoomListPage';
+import SignupPage from 'pages/Admin/SignupPage';
 import React from 'react';
 
-const Menu = React.lazy(() => import('pages/MenuPage'));
-const Booking = React.lazy(() => import('pages/BookingPage'));
-const Orders = React.lazy(() => import('pages/Orders'));
-const OrderDetail = React.lazy(() => import('pages/OrderDetail'));
-const Table = React.lazy(() => import('pages/TablePage'));
-const TableDetail = React.lazy(() => import('pages/TableDetail'));
+// Public
+const Room = React.lazy(() => import('pages/Public/RoomMenuPage'));
+const Booking = React.lazy(() => import('pages/Public/BookingPage'));
+const Orders = React.lazy(() => import('pages/Public/Orders'));
+const OrderDetail = React.lazy(() => import('pages/Public/OrderDetail'));
+const Table = React.lazy(() => import('pages/Public/TablePage'));
+const TableDetail = React.lazy(() => import('pages/Public/TableDetail'));
+const Login = React.lazy(() => import('Validate/Login'));
+const PolicyPage = React.lazy(() => import('pages/Public/PolicyPage'));
 
-const { default: Login } = require('Validate/Login');
+// Student
+const Student = React.lazy(() => import('pages/Student/StudentProfile'));
+const RoomHistory = React.lazy(() => import('pages/Student/RoomHistory'));
+
+// const { default: Login } = require('Validate/Login');
 const { default: Logout } = require('Validate/Logout');
 
 const publicRoutes = [
   { path: '/', component: HomePage },
   { path: '/home', component: HomePage },
-  { path: '/menu', component: Menu },
+  { path: '/room', component: Room },
   { path: '/booking', component: Booking },
   { path: '/orders', component: Orders },
   { path: '/orders/:id', component: OrderDetail },
   { path: '/table-overview', component: Table },
-  { path: '/table-overview/:id', component: TableDetail }
+  { path: '/table-overview/:id', component: TableDetail },
+  { path: '/policy/register', component: PolicyPage }
 ];
 
 const authRoutes = [
@@ -38,4 +49,9 @@ const adminRoutes = [
   { path: '/admin/room/:id', component: RoomDetailPage }
 ];
 
-export { authRoutes, publicRoutes, adminRoutes };
+const studentRoute = [
+  { path: '/student/profile/:id', component: Student },
+  { path: '/student/room/history', component: RoomHistory }
+];
+
+export { authRoutes, publicRoutes, adminRoutes, studentRoute };

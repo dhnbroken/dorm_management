@@ -39,10 +39,9 @@
 }
 
 #About {
-  padding: 50px;
+  /* padding: 32px; */
   height: 600px;
-  background-image: url(../../assets/images/about-image.jpg);
-  background-position: 90%;
+  background-position: 100%;
   background-repeat: no-repeat;
   background-size: contain;
 }

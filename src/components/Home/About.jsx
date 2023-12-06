@@ -1,14 +1,19 @@
-import {Container, Typography } from '@mui/material'
-import React from 'react'
+import { Container, Typography } from '@mui/material';
+import React from 'react';
 
 const About = () => {
   return (
-    <Container id='About'>
-      <Typography  className='first-title' component='h6' sx={{textAlign:'start'}} variant='h6'>About</Typography>
-      <Typography className='second-title' component='h4' sx={{textAlign:'start'}} variant='h4'>Welcome to RegFood</Typography>
-      <Typography component='p'>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</Typography>
+    <Container id="About" className="!bg-none xl:bg-about !flex flex-col items-center justify-center xl:items-start">
+      <Typography className="second-title" component="h4" sx={{ textAlign: 'start' }} variant="h4">
+        Chào mừng đến KTX
+      </Typography>
+      <Typography component="p">
+        Ký túc xá sinh viên là nơi lý tưởng để sinh viên bắt đầu cuộc sống đại học của mình. Với vị trí thuận tiện, cơ
+        sở vật chất hiện đại, giá cả phải chăng và môi trường học tập và sinh hoạt lành mạnh, ký túc xá sẽ giúp sinh
+        viên yên tâm học tập và rèn luyện, sẵn sàng cho tương lai.
+      </Typography>
     </Container>
-  )
-}
+  );
+};
 
-export default About
+export default About;
