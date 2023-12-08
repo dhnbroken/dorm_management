@@ -47,13 +47,13 @@ const RoomMenuDetail = ({ open, setOpen, product }) => {
                   <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
                     <div className="sm:col-span-4 lg:col-span-5">
                       <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100">
-                        <img src={product.imageSrc} alt={product.imageAlt} className="object-cover object-center" />
+                        <img src={product?.imageSrc} alt={product?.imageAlt} className="object-cover object-center" />
                       </div>
                     </div>
                     <div className="sm:col-span-8 lg:col-span-7 h-full">
                       <div className="flex flex-col h-full justify-between">
                         <div>
-                          <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product.name}</h2>
+                          <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{product?.name}</h2>
 
                           <section aria-labelledby="information-heading" className="mt-4">
                             <h3 id="information-heading" className="sr-only">
@@ -61,10 +61,10 @@ const RoomMenuDetail = ({ open, setOpen, product }) => {
                             </h3>
 
                             <div className="flex items-center">
-                              <p className="text-lg text-gray-900 sm:text-xl">{product.price}</p>
+                              <p className="text-lg text-gray-900 sm:text-xl">{product?.price}</p>
                             </div>
 
-                            <div className="mt-6">{product.description}</div>
+                            <div className="mt-6">{product?.description}</div>
                           </section>
                         </div>
 

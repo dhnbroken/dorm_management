@@ -34,7 +34,7 @@ const note = [
 
 const PolicyRevenue = () => {
   return (
-    <>
+    <div className="w-1/2 bg-slate-200/70 rounded-xl border-2 border-solid p-8">
       <div>
         <h3 className="text-xl text-center font-bold w-full">CÁC KHOẢN THU VÀ MỨC THU</h3>
         <div className="text-start flex flex-col gap-2">
@@ -57,7 +57,7 @@ const PolicyRevenue = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

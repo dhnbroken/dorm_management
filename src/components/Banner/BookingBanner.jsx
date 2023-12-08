@@ -6,10 +6,10 @@ const BookingBanner = () => {
   return (
     <Box className="BookingBanner relative">
       <div className=" bg-black/[0.65] w-full h-full flex justify-center items-center flex-col">
-        <Typography variant="subtitle1" component="p">
-          NOW BOOKING
+        <Typography variant="subtitle1" className="!text-4xl" component="p">
+          KTX Sinh viên
         </Typography>
-        <Typography variant="h3">Private Dinners & Happy Hours</Typography>
+        {/* <Typography variant="h3">Ký túc xá ước mơ</Typography> */}
       </div>
     </Box>
   );
