@@ -45,14 +45,15 @@ export default function AdminSidebar() {
   const [active, setActive] = useState('dashboard');
   const navigate = useNavigate();
   return (
-    <div className="hidden lg:flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+    <div className="hidden lg:flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-6">
       <div className="flex h-16 shrink-0 items-center">
-        <Link to={'/'}>
-          <img
+        <Link to={'/'} className="flex w-full justify-center items-center font-bold text-xl text-sky-500">
+          {/* <img
             className="h-8 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
-          />
+          /> */}
+          DORM
         </Link>
       </div>
       <nav className="flex flex-1 flex-col">

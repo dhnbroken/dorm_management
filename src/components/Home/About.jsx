@@ -3,8 +3,11 @@ import React from 'react';
 
 const About = () => {
   return (
-    <Container id="About" className="!bg-none xl:bg-about !flex flex-col items-center justify-center xl:items-start">
-      <Typography className="second-title" component="h4" sx={{ textAlign: 'start' }} variant="h4">
+    <Container
+      id="About"
+      className="!bg-none xl:bg-about !flex flex-col items-center w-full justify-center xl:items-start"
+    >
+      <Typography className="second-title text-center" component="h4" variant="h4">
         Chào mừng đến KTX
       </Typography>
       <Typography component="p">

@@ -27,12 +27,15 @@ export const RoomMenu = [
     imageSrc: Room6,
     imageAlt: 'Room 6'
   }
-  // More products...
 ];
 
 export const sampleMenu = [
   {
-    section_name: 'Phòng 2',
+    name: 'Phòng 2',
+    price: '1,250,000Đ/Tháng',
+    description: '2 giường đơn',
+    imageSrc: Room2,
+    imageAlt: 'Room 2',
     items: [
       {
         item_name: 'Máy lạnh',
@@ -52,11 +55,15 @@ export const sampleMenu = [
     ]
   },
   {
-    section_name: 'Phòng 4',
+    name: 'Phòng 4',
+    price: '650,000Đ/Tháng',
+    description: '4 giường đơn',
+    imageSrc: Room4,
+    imageAlt: 'Room 4',
     items: [
       {
         item_name: 'Máy lạnh',
-        description: 'Phòng có máy lạnh',
+        description: 'Không có máy lạnh',
         image: Room4
       },
       {
@@ -72,11 +79,15 @@ export const sampleMenu = [
     ]
   },
   {
-    section_name: 'Phòng 6',
+    name: 'Phòng 6',
+    price: '240,000Đ/Tháng',
+    description: '3 giường đôi',
+    imageSrc: Room6,
+    imageAlt: 'Room 6',
     items: [
       {
         item_name: 'Máy lạnh',
-        description: 'Phòng có máy lạnh',
+        description: 'Không có máy lạnh',
         image: Room6
       },
       {

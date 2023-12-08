@@ -7,8 +7,9 @@ const policy = [
     children: [
       {
         id: 1,
+        isHtml: true,
         content:
-          '- Chứng minh nhân dân/thẻ căn cước công dân (mặt trước và mặt sau), mã số định danh cá nhân, trường hợp chưa có mã số định danh. Sinh viên truy cập link <a href="https://ktx.vnuhcm.edu.vn/tin-tuc/huong-dan-tra-cuu-ma-so-dinh-danh-cong-dan-271.html" target="_blank" class="text-blue-500">này</a> để tra cứu.'
+          '- Chứng minh nhân dân/thẻ căn cước công dân (mặt trước và mặt sau), mã số định danh cá nhân, trường hợp chưa có mã số định danh.'
       },
       { id: 2, content: '- Thẻ Bảo hiểm Y tế.' },
       {
@@ -99,8 +100,8 @@ const policy = [
 
 const PolicyStudentInfo = () => {
   return (
-    <>
-      <div className="mt-8 w-full flex flex-col gap-2">
+    <div className="w-1/2 bg-slate-200/70 rounded-xl border-2 border-solid p-8">
+      <div className="w-full flex flex-col gap-2">
         <h3 className="text-xl text-center font-bold w-full">
           THÔNG TIN SINH VIÊN ĐĂNG KÝ Ở KTX ĐHQG-HCM NH 2023-2024
         </h3>
@@ -124,7 +125,7 @@ const PolicyStudentInfo = () => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

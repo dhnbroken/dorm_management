@@ -4,9 +4,9 @@ import React from 'react';
 
 const PolicyPage = () => {
   return (
-    <div className="w-full flex flex-col justify-center items-start p-8 px-16">
-      <PolicyRevenue />
+    <div className="w-full flex justify-center items-start p-8 px-4 gap-8">
       <PolicyStudentInfo />
+      <PolicyRevenue />
     </div>
   );
 };
