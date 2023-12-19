@@ -4,6 +4,7 @@ import HomePage from 'pages/HomePage';
 // Admin
 import AdminDashboardPage from 'pages/Admin/AdminDashboardPage';
 import RoomDetailPage from 'pages/Admin/RoomDetailPage';
+import RoomAddPage from 'pages/Admin/RoomAddPage';
 import RoomListPage from 'pages/Admin/RoomListPage';
 import SignupPage from 'pages/Admin/SignupPage';
 import React from 'react';
@@ -38,7 +39,7 @@ const publicRoutes = [
 ];
 
 const authRoutes = [
-  { path: 'login', component: Login },
+  { path: '/login', component: Login },
   { path: '/logout', component: Logout }
 ];
 
@@ -46,7 +47,8 @@ const adminRoutes = [
   { path: '/admin', component: AdminDashboardPage },
   { path: '/admin/student/signup', component: SignupPage },
   { path: '/admin/room/list', component: RoomListPage },
-  { path: '/admin/room/:id', component: RoomDetailPage }
+  { path: '/admin/room/:id', component: RoomDetailPage },
+  { path: '/admin/room/add', component: RoomAddPage }
 ];
 
 const studentRoute = [

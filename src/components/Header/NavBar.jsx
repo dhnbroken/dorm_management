@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
+import { Authenticate } from 'Validate/AuthContext';
+import UserMenu from './UserMenu';
 
 const navigation = [
   { name: 'Trang chủ', href: '/' },
@@ -12,10 +14,11 @@ const navigation = [
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuth, currentUser, logout } = useContext(Authenticate);
 
   return (
     <header className="bg-white shadow">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <nav className="mx-auto flex max-w-7xl min-h-[90px] items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5 font-bold text-xl text-sky-500">
             <span className="sr-only">Your Company</span>
@@ -44,10 +47,14 @@ export default function Example() {
             </Link>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
-            Đăng nhập <span aria-hidden="true">&rarr;</span>
-          </Link>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center">
+          {isAuth ? (
+            <UserMenu />
+          ) : (
+            <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
+              Đăng nhập <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -73,7 +80,7 @@ export default function Example() {
             </button>
           </div>
           <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
+            <div className="-my-6 divide-y divide-gray-500/10" onClick={() => setMobileMenuOpen(false)}>
               <div className="space-y-2 py-6">
                 {navigation.map((item) => (
                   <Link
@@ -85,14 +92,24 @@ export default function Example() {
                   </Link>
                 ))}
               </div>
-              <div className="py-6">
-                <Link
-                  to="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
-              </div>
+              {isAuth ? (
+                <div className="py-6">
+                  <div>
+                    <Link to={`/student/profile/${currentUser?._id}`} className="mobile_menu_selection">
+                      Tài khoản
+                    </Link>
+                  </div>
+                  <div className="mobile_menu_selection cursor-pointer" onClick={logout}>
+                    Đăng xuất
+                  </div>
+                </div>
+              ) : (
+                <div className="py-6">
+                  <Link to="/login" className="mobile_menu_selection">
+                    Đăng nhập
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </Dialog.Panel>

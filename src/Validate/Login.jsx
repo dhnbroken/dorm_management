@@ -1,40 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import './auth.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import { Authenticate } from './AuthContext';
-// import { errorToast } from 'utils/toast';
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 270,
-//   bgcolor: 'white',
-//   boxShadow: 24,
-//   p: 4
-// };
+import { useMutation } from '@tanstack/react-query';
+import { login } from 'API/auth';
+import { Authenticate } from './AuthContext';
 
 const Login = () => {
   //User Details View
   // const [open, setOpen] = React.useState(false);
+  // const queryClient = useQueryClient();
+
+  const { setCurrentUser, setAuth } = useContext(Authenticate);
+
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      setCurrentUser(data);
+      setAuth(true);
+      localStorage.setItem('currentUser', JSON.stringify(data));
+      localStorage.setItem('isAuth', true);
+      navigate('/');
+    }
+  });
 
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit
-    // formState: { errors }
-  } = useForm();
-  //auth function
-  // const { setAuth } = useContext(Authenticate);
-
-  //form validation
+  const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    // handle
-    console.log(data);
-    navigate('/');
+    mutation.mutate(data);
   };
 
   return (
@@ -64,9 +58,7 @@ const Login = () => {
                     </label>
                     <div className="mt-2">
                       <input
-                        {...register('citizenId', { required: true })}
-                        id="citizenId"
-                        name="citizenId"
+                        {...register('CMND', { required: true })}
                         type="text"
                         className="block w-full rounded-md border-0 p-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -79,8 +71,7 @@ const Login = () => {
                     </label>
                     <div className="mt-2">
                       <input
-                        id="password"
-                        name="password"
+                        {...register('MatKhau', { required: true })}
                         type="password"
                         required
                         className="block w-full rounded-md border-0 px-1.5 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

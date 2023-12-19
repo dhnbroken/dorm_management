@@ -2,24 +2,31 @@ import * as yup from 'yup';
 
 export const profileSchema = yup
   .object({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    citizenId: yup
+    HoTen: yup.string().required(),
+    Phone: yup.string().required().length(10),
+    CMND: yup
       .string()
       .required()
       .matches(/^[0-9]+$/, 'Must be only digits')
       .test('len', 'CMND/CCCD Phải có 9 hoặc 12 ký tự', (val) => val.length === 9 || val.length === 12),
-    studentId: yup.string().required(),
-    type: yup.string().default('student').required(),
-    gender: yup.string().required()
+    Mssv: yup.string().required(),
+    Truong: yup.string().required(),
+    GioiTinh: yup.string().required(),
+    NganHang: yup.string().required(),
+    Email: yup.string().required(),
+    Address: yup.string().required(),
+    DateOfBirth: yup.string().required()
   })
   .required();
 
 export const inputProfileArray = [
-  { htmlFor: 'firstName', label: 'Tên' },
-  { htmlFor: 'lastName', label: 'Họ' },
-  { htmlFor: 'citizenId', label: 'CMND/CCCD' },
-  { htmlFor: 'studentId', label: 'MSSV' }
+  { htmlFor: 'HoTen', label: 'Họ tên' },
+  { htmlFor: 'Phone', label: 'Số điện thoại' },
+  { htmlFor: 'CMND', label: 'CMND/CCCD' },
+  { htmlFor: 'Mssv', label: 'MSSV' },
+  { htmlFor: 'Email', label: 'Email' },
+  { htmlFor: 'NganHang', label: 'Ngân hàng' },
+  { htmlFor: 'Address', label: 'Địa chỉ', isFull: true }
 ];
 
 export const roomList = [
@@ -202,5 +209,40 @@ export const roomList = [
         ]
       }
     ]
+  }
+];
+
+export const universities = [
+  {
+    id: 'HCMUT',
+    name: 'Đại học Bách khoa'
+  },
+  {
+    id: 'HCMUS',
+    name: 'Đại học Khoa học Tự nhiên'
+  },
+  {
+    id: 'USSH',
+    name: 'Đại học Khoa học Xã hội và Nhân văn'
+  },
+  {
+    id: 'HCMIU',
+    name: 'Đại học Quốc tế'
+  },
+  {
+    id: 'UIT',
+    name: 'Đại học Công nghệ Thông tin'
+  },
+  {
+    id: 'UEL',
+    name: 'Đại học Kinh tế - Luật'
+  },
+  {
+    id: 'AGU',
+    name: 'Đại học An Giang'
+  },
+  {
+    id: 'MEDVNU',
+    name: 'Khoa Y'
   }
 ];
