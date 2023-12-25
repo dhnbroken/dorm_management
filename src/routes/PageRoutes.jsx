@@ -1,13 +1,15 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Loader from '../components/Loading/Loading';
 import { adminRoutes, authRoutes, publicRoutes, studentRoute } from './routes';
 import NavBar from 'components/Header/NavBar';
 import Footer from 'components/Footer/Footer';
 import AdminSidebar from 'components/AdminSidebar';
 import NotFound from 'pages/NotFound';
+import { Authenticate } from 'Validate/AuthContext';
 
 const PageRoutes = () => {
+  const { isAuth } = useContext(Authenticate);
   return (
     <React.Suspense fallback={<Loader />}>
       <Routes>
@@ -33,17 +35,7 @@ const PageRoutes = () => {
         {/* Authentication Page*/}
         {authRoutes.map((route, index) => {
           const Page = route.component;
-          return (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                <>
-                  <Page />
-                </>
-              }
-            />
-          );
+          return <Route key={index} path={route.path} element={<>{isAuth ? <Navigate to="/" /> : <Page />}</>} />;
         })}
 
         {/* Admin */}

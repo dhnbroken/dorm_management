@@ -27,7 +27,7 @@ const navigation = [
     value: 'room',
     children: [
       { name: 'Danh sách phòng', to: '/admin/room/list' },
-      { name: 'iOS App', to: '#' },
+      { name: 'Thêm phòng', to: '/admin/room/add' },
       { name: 'Android App', to: '#' },
       { name: 'New Customer Portal', to: '#' }
     ]

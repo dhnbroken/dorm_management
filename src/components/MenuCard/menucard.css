@@ -21,7 +21,6 @@
   display: flex;
   gap: 10px;
   /* border-bottom: 1px dashed lightgray; */
-  cursor: default;
   padding: 25px;
 }
 

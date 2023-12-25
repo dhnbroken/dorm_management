@@ -155,3 +155,24 @@ img {
 .table-bordered td {
   border: 1px solid #ddd;
 }
+
+.mobile_menu_selection {
+  @apply -mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50;
+}
+
+.profile_form_label {
+  @apply block text-sm font-medium leading-6 text-gray-900;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}

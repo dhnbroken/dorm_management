@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { PhotoIcon } from '@heroicons/react/24/solid';
-import { inputProfileArray, profileSchema } from 'DB';
+import { inputProfileArray, profileSchema, universities } from 'DB';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'components/DatePicker';
+import moment from 'moment';
+import { useMutation } from '@tanstack/react-query';
+import { createStudentAccount, createStudentInformation } from 'API/user';
+import { toast } from 'react-toastify';
 
 const InputProfile = ({
   htmlFor,
@@ -19,7 +24,7 @@ const InputProfile = ({
 }) => {
   return (
     <>
-      <label htmlFor={htmlFor} className="block text-sm font-medium leading-6 text-gray-900">
+      <label htmlFor={htmlFor} className="profile_form_label">
         {label}
       </label>
       <div className="mt-2">
@@ -48,14 +53,37 @@ const ProfileForm = ({ data, isStudent }) => {
     resolver: yupResolver(profileSchema)
   });
 
+  const [informationData, setInformationData] = useState({});
+
+  const createAccountInformation = useMutation({
+    mutationFn: createStudentInformation,
+    onSuccess: () => {
+      toast.success('Tạo tài khoản cho sinh viên thành công');
+    }
+  });
+
+  const createAccountStudent = useMutation({
+    mutationFn: createStudentAccount,
+    onSuccess: () => {
+      createAccountInformation.mutate({ ...informationData, Matk: 'Password@123' });
+    }
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    const postData = { ...data, DateOfBirth: moment(data.DateOfBirth).toDate() };
+    setInformationData(postData);
+
+    createAccountStudent.mutate({
+      CMND: data?.CMND,
+      MatKhau: 'Password@123',
+      RoleId: process.env.REACT_APP_STUDENT_ROLE_ID
+    });
   };
 
   return (
     <>
       <div className="space-y-10">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-8 xl:grid-cols-3">
           <div className="px-4 sm:px-0">
             <img src={data?.imageUrl} alt="" />
           </div>
@@ -67,7 +95,10 @@ const ProfileForm = ({ data, isStudent }) => {
             <div className="px-4 py-6 sm:p-8">
               <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 {inputProfileArray.map((item) => (
-                  <div className="sm:col-span-3" key={item.label}>
+                  <div
+                    className={`sm:col-span-3 ${item?.isFull && 'sm:col-span-full !max-w-full w-full'}`}
+                    key={item.label}
+                  >
                     <InputProfile
                       htmlFor={item.htmlFor}
                       label={item.label}
@@ -81,7 +112,7 @@ const ProfileForm = ({ data, isStudent }) => {
                 ))}
 
                 <div className="sm:col-span-3">
-                  <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="country" className="profile_form_label">
                     Loại
                   </label>
                   <div className="mt-2">
@@ -95,13 +126,42 @@ const ProfileForm = ({ data, isStudent }) => {
                   </div>
                 </div>
 
+                <div className={`sm:col-span-3`}>
+                  <InputProfile
+                    htmlFor={'NienKhoa'}
+                    label={'Niên khóa'}
+                    register={register}
+                    errors={errors}
+                    placeholder="Vd: 2019-2023"
+                  />
+                </div>
+
+                <div className="sm:col-span-full">
+                  <label htmlFor="country" className="profile_form_label">
+                    Trường
+                  </label>
+                  <div className="mt-2">
+                    <select
+                      {...register('Truong')}
+                      disabled={isStudent}
+                      className={`custom_select_field ${
+                        isStudent && 'bg-slate-100/70 cursor-not-allowed'
+                      } !max-w-full w-full`}
+                    >
+                      {universities.map((uni) => (
+                        <option key={uni.id}>{uni.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <div className="sm:col-span-3">
-                  <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="country" className="profile_form_label">
                     Giới tính
                   </label>
                   <div className="mt-2">
                     <select
-                      {...register('gender')}
+                      {...register('GioiTinh')}
                       disabled={isStudent}
                       className={`custom_select_field ${isStudent && 'bg-slate-100/70 cursor-not-allowed'}`}
                     >
@@ -111,8 +171,17 @@ const ProfileForm = ({ data, isStudent }) => {
                   </div>
                 </div>
 
+                <div className="sm:col-span-3">
+                  <label htmlFor="country" className="profile_form_label">
+                    Ngày sinh
+                  </label>
+                  <div className="mt-2">
+                    <DatePicker register={register} />
+                  </div>
+                </div>
+
                 <div className="col-span-full">
-                  <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="cover-photo" className="profile_form_label">
                     Ảnh
                   </label>
                   <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
