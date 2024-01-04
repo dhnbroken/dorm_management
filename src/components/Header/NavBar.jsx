@@ -28,6 +28,11 @@ const navigation = [
         label: 'Sửa chữa phòng',
         key: '3',
         href: ''
+      },
+      {
+        label: 'Xem hóa đơn',
+        key: '4',
+        href: ''
       }
     ]
   },

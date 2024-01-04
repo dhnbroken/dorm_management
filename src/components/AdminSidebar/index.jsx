@@ -32,6 +32,16 @@ const navigation = [
       { name: 'Danh sách phòng', to: '/admin/room/list' },
       { name: 'Thêm phòng', to: '/admin/room/add' }
     ]
+  },
+  {
+    name: 'Quản lý hóa đơn',
+    icon: FolderIcon,
+    current: false,
+    value: 'room',
+    children: [
+      { name: 'Danh sách hóa đơn', to: '/admin/bill/list' },
+      { name: 'Thêm phòng', to: '/admin/room/add' }
+    ]
   }
 ];
 

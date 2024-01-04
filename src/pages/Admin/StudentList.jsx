@@ -4,11 +4,13 @@ import { Modal, Space } from 'antd';
 import { DeleteButton } from 'components/Button/DeleteButton';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
+import InputWithLabel from 'components/Input/InputWithLabel';
 import EditIcon from 'components/icons/EditIcon';
 import WarningIcon from 'components/icons/Warning';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 const StudentList = () => {
@@ -22,6 +24,15 @@ const StudentList = () => {
 
   const [isModalDelete, setIsModalDelete] = useState(false);
   const [dataDelete, setDataDelete] = useState({});
+
+  const [isModalEdit, setIsModalEdit] = useState(false);
+  const [editData, setEditData] = useState({});
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
 
   const columns = [
     {
@@ -68,6 +79,14 @@ const StudentList = () => {
       fixed: 'right',
       render: (_, record) => (
         <Space size="small">
+          <PrimaryButton
+            text="Cập nhật"
+            Icon={EditIcon}
+            onClick={() => {
+              setIsModalEdit(true);
+              setEditData(record);
+            }}
+          />
           <DeleteButton
             text="Xóa"
             onClick={() => {
@@ -136,6 +155,44 @@ const StudentList = () => {
             </button>
           </div>
         </div>
+      </Modal>
+
+      <Modal open={isModalEdit} onCancel={() => setIsModalEdit(false)} footer={false}>
+        <div className="text-center w-full text-xl font-semibold my-3">Sửa thông tin sinh viên</div>
+        <form className="flex justify-center flex-col gap-3">
+          <div className="flex flex-col gap-3">
+            <InputWithLabel label={'Ho tên'} register={register} registerKey={'HoTen'} defaultValue={editData?.HoTen} />
+            <InputWithLabel
+              label={'CMND/CCCD'}
+              register={register}
+              registerKey={'CMND'}
+              defaultValue={editData?.CMND}
+            />
+            <InputWithLabel
+              label={'Trường'}
+              register={register}
+              registerKey={'Truong'}
+              defaultValue={editData?.Truong}
+            />
+          </div>
+          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto
+              disabled:bg-red-200 disabled:hover:bg-red-200"
+              onClick={() => handleDeleteUser(dataDelete?._id)}
+            >
+              Xác nhận
+            </button>
+            <button
+              type="button"
+              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              onClick={() => setIsModalDelete(false)}
+            >
+              Hủy
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

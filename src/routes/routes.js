@@ -9,6 +9,7 @@ import RoomListPage from 'pages/Admin/RoomListPage';
 import SignupPage from 'pages/Admin/SignupPage';
 import React from 'react';
 import StudentList from 'pages/Admin/StudentList';
+import BillListPage from 'pages/Admin/BillListPage';
 
 // Public
 const Room = React.lazy(() => import('pages/Public/RoomMenuPage'));
@@ -50,7 +51,9 @@ const adminRoutes = [
   { path: '/admin/student/list', component: StudentList },
   { path: '/admin/room/list', component: RoomListPage },
   { path: '/admin/room/:id', component: RoomDetailPage },
-  { path: '/admin/room/add', component: RoomAddPage }
+  { path: '/admin/room/add', component: RoomAddPage },
+  { path: '/admin/bill/list', component: BillListPage },
+  { path: '/admin/bill/:id', component: RoomDetailPage }
 ];
 
 const studentRoute = [
