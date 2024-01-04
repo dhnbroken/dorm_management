@@ -50,6 +50,9 @@ const RoomForm = () => {
     onSuccess: () => {
       toast.success('Thêm thành công');
       reset();
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 

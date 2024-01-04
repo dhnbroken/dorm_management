@@ -58,6 +58,9 @@ export default function RoomList() {
       queryClient.invalidateQueries({ queryKey: ['all_rooms'] });
       queryClient.invalidateQueries({ queryKey: ['all_dorms'] });
       setIsModalDelete(false);
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 

@@ -10,6 +10,8 @@ import { Authenticate } from 'Validate/AuthContext';
 
 const PageRoutes = () => {
   const { isAuth } = useContext(Authenticate);
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
   return (
     <React.Suspense fallback={<Loader />}>
       <Routes>
@@ -46,12 +48,18 @@ const PageRoutes = () => {
               key={index}
               path={route.path}
               element={
-                <div className="flex min-h-screen">
-                  <AdminSidebar />
-                  <div className="w-full lg:w-4/5 bg-slate-100/40">
-                    <Page />
-                  </div>
-                </div>
+                <>
+                  {currentUser && currentUser.RoleId !== process.env.REACT_APP_ADMIN_ROLE_ID ? (
+                    <Navigate to="/" />
+                  ) : (
+                    <div className="flex min-h-screen">
+                      <AdminSidebar />
+                      <div className="w-full lg:w-4/5 bg-slate-100/40">
+                        <Page />
+                      </div>
+                    </div>
+                  )}
+                </>
               }
             />
           );

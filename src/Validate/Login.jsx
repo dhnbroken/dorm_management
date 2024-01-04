@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { login } from 'API/auth';
 import { Authenticate } from './AuthContext';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   //User Details View
@@ -22,6 +23,9 @@ const Login = () => {
       localStorage.setItem('currentUser', JSON.stringify(data?.details));
       localStorage.setItem('isAuth', true);
       navigate('/');
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 

@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <Box className="content">
       <Typography component="h2" variant="h2">
-        Ký túc xá Sinh viên số 1 thế giới
+        Ký túc xá Sinh viên
       </Typography>
       <Typography component="p">Nơi nuôi dưỡng giấc mơ của sinh viên</Typography>
       <Link to="/login">

@@ -86,6 +86,9 @@ const StudentList = () => {
       toast.success('Xóa thành công', { autoClose: 2000 });
       setIsModalDelete(false);
       queryClient.invalidateQueries({ queryKey: ['All_Student'] });
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 

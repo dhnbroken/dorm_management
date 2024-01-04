@@ -69,6 +69,9 @@ const SignupPage = () => {
         DateOfBirth: moment(dob, 'DD/MM/YYYY').toDate(),
         Room: [room]
       });
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 
@@ -87,6 +90,9 @@ const SignupPage = () => {
           }
         ]
       });
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 
@@ -141,6 +147,9 @@ const SignupPage = () => {
     onSuccess: () => {
       toast.success('Tạo tài khoản cho sinh viên thành công');
       navigate('/admin');
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
     }
   });
 
