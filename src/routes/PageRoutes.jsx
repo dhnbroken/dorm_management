@@ -12,6 +12,7 @@ const PageRoutes = () => {
   const { isAuth } = useContext(Authenticate);
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+  console.log(process.env.REACT_APP_ADMIN_ROLE_ID);
   return (
     <React.Suspense fallback={<Loader />}>
       <Routes>
