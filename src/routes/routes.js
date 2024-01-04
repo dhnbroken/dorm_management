@@ -8,6 +8,7 @@ import RoomAddPage from 'pages/Admin/RoomAddPage';
 import RoomListPage from 'pages/Admin/RoomListPage';
 import SignupPage from 'pages/Admin/SignupPage';
 import React from 'react';
+import StudentList from 'pages/Admin/StudentList';
 
 // Public
 const Room = React.lazy(() => import('pages/Public/RoomMenuPage'));
@@ -46,6 +47,7 @@ const authRoutes = [
 const adminRoutes = [
   { path: '/admin', component: AdminDashboardPage },
   { path: '/admin/student/signup', component: SignupPage },
+  { path: '/admin/student/list', component: StudentList },
   { path: '/admin/room/list', component: RoomListPage },
   { path: '/admin/room/:id', component: RoomDetailPage },
   { path: '/admin/room/add', component: RoomAddPage }

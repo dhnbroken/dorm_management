@@ -1,13 +1,18 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getAllRooms } from 'API/room';
+import { getAllRooms, getRoom, updateRoom } from 'API/room';
 import { createStudentAccount, createStudentInformation } from 'API/user';
 import { Select, Steps } from 'antd';
 import ProfileForm from 'components/Form/ProfileForm';
+import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SignupPage = () => {
+  const { profileData } = useContext(GlobalContextProvider);
+  const navigate = useNavigate();
+
   const [current, setCurrent] = useState(0);
   const [options, setOptions] = useState([]);
 
@@ -21,6 +26,16 @@ const SignupPage = () => {
     staleTime: 5000
   });
 
+  const { data: RoomData, refetch } = useQuery({
+    queryKey: ['detail_room'],
+    queryFn: () => getRoom(room),
+    enabled: !!room
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [room]);
+
   useEffect(() => {
     if (isSuccess) {
       const newArray = roomsData.map((room) => ({
@@ -33,7 +48,6 @@ const SignupPage = () => {
   }, [isSuccess]);
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
     setRoom(value);
   };
 
@@ -47,6 +61,7 @@ const SignupPage = () => {
 
   const createAccountStudent = useMutation({
     mutationFn: createStudentAccount,
+
     onSuccess: (res) => {
       createAccountInformation.mutate({
         ...informationData,
@@ -59,17 +74,30 @@ const SignupPage = () => {
 
   const createAccountInformation = useMutation({
     mutationFn: createStudentInformation,
-    onSuccess: () => {
-      toast.success('Tạo tài khoản cho sinh viên thành công');
+    onSuccess: (res) => {
+      updateSelectedRoom.mutate({
+        id: room,
+        CMND: profileData.CMND,
+        data: [
+          ...RoomData?.RoomNumbers,
+          {
+            _id: res?.Matk,
+            number: RoomData.length + 1,
+            unavailableDates: moment().add(6, 'months').toDate()
+          }
+        ]
+      });
     }
   });
 
   const handleRegister = () => {
-    createAccountStudent.mutate({
-      CMND: informationData?.CMND,
-      MatKhau: 'Password@123',
-      RoleId: process.env.REACT_APP_STUDENT_ROLE_ID
-    });
+    if (RoomData) {
+      createAccountStudent.mutate({
+        CMND: informationData?.CMND,
+        MatKhau: 'Password@123',
+        RoleId: process.env.REACT_APP_STUDENT_ROLE_ID
+      });
+    }
   };
 
   const steps = [
@@ -107,6 +135,14 @@ const SignupPage = () => {
   ];
 
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
+
+  const updateSelectedRoom = useMutation({
+    mutationFn: updateRoom,
+    onSuccess: () => {
+      toast.success('Tạo tài khoản cho sinh viên thành công');
+      navigate('/admin');
+    }
+  });
 
   return (
     <div className="px-16 py-8">

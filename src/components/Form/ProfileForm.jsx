@@ -7,10 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'components/DatePicker';
-import moment from 'moment';
-import { useMutation } from '@tanstack/react-query';
-import { createStudentAccount, createStudentInformation } from 'API/user';
-import { toast } from 'react-toastify';
 
 const InputProfile = ({
   htmlFor,

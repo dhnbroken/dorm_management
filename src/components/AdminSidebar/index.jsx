@@ -18,7 +18,10 @@ const navigation = [
     icon: UsersIcon,
     current: false,
     value: 'student',
-    children: [{ name: 'Thêm sinh viên', to: '/admin/student/signup' }]
+    children: [
+      { name: 'Danh sách sinh viên', to: '/admin/student/list' },
+      { name: 'Thêm sinh viên', to: '/admin/student/signup' }
+    ]
   },
   {
     name: 'Quản lý phòng',
@@ -27,14 +30,9 @@ const navigation = [
     value: 'room',
     children: [
       { name: 'Danh sách phòng', to: '/admin/room/list' },
-      { name: 'Thêm phòng', to: '/admin/room/add' },
-      { name: 'Android App', to: '#' },
-      { name: 'New Customer Portal', to: '#' }
+      { name: 'Thêm phòng', to: '/admin/room/add' }
     ]
-  },
-  { name: 'Calendar', to: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', to: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', to: '#', icon: ChartPieIcon, current: false }
+  }
 ];
 
 function classNames(...classes) {

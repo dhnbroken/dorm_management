@@ -28,7 +28,6 @@ export default function ChangePassModal({ open, setOpen }) {
     resolver: yupResolver(schema)
   });
   const onSubmit = (data) => {
-    console.log(data);
     // handle change pass
 
     resetForm();
