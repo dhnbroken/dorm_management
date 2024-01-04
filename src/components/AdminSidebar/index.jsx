@@ -38,10 +38,7 @@ const navigation = [
     icon: FolderIcon,
     current: false,
     value: 'room',
-    children: [
-      { name: 'Danh sách hóa đơn', to: '/admin/bill/list' },
-      { name: 'Thêm phòng', to: '/admin/room/add' }
-    ]
+    children: [{ name: 'Danh sách hóa đơn', to: '/admin/bill/list' }]
   }
 ];
 
