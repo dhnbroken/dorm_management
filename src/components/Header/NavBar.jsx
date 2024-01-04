@@ -1,20 +1,45 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { Authenticate } from 'Validate/AuthContext';
 import UserMenu from './UserMenu';
+import { Dropdown } from 'antd';
+import ServiceModal from 'components/ServiceModal';
 
 const navigation = [
   { name: 'Trang chủ', href: '/' },
   { name: 'Loại phòng', href: '/room' },
-  { name: 'Dịch vụ', href: '/student/profile/1' },
+  {
+    name: 'Dịch vụ',
+    href: '/',
+    subMenu: [
+      {
+        label: 'Trả phòng',
+        key: '1',
+        href: ''
+      },
+      {
+        label: 'Chuyển phòng',
+        key: '2',
+        href: ''
+      },
+      {
+        label: 'Sửa chữa phòng',
+        key: '3',
+        href: ''
+      }
+    ]
+  },
   { name: 'Đăng ký', href: '/policy/register' }
 ];
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isAuth, currentUser, logout } = useContext(Authenticate);
+
+  const [keyService, setKeyService] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="bg-white shadow">
@@ -41,11 +66,26 @@ export default function Example() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <Link key={item.name} to={item.href} className="text-sm font-semibold leading-6 text-gray-900">
-              {item.name}
-            </Link>
-          ))}
+          {navigation.map((item) =>
+            item?.subMenu?.length ? (
+              <Dropdown
+                key={item.name}
+                menu={{
+                  items: item.subMenu,
+                  onClick: (menu) => {
+                    setKeyService(menu.key);
+                    setIsOpen(true);
+                  }
+                }}
+              >
+                <div className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer">Dịch vụ</div>
+              </Dropdown>
+            ) : (
+              <Link key={item.name} to={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+                {item.name}
+              </Link>
+            )
+          )}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center">
           {isAuth ? (
@@ -114,6 +154,7 @@ export default function Example() {
           </div>
         </Dialog.Panel>
       </Dialog>
+      <ServiceModal keyService={keyService} isOpen={isOpen} onCancel={() => setIsOpen(false)} />
     </header>
   );
 }

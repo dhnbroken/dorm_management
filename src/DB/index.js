@@ -14,8 +14,7 @@ export const profileSchema = yup
     GioiTinh: yup.string().required(),
     NganHang: yup.string().required(),
     Email: yup.string().required(),
-    Address: yup.string().required(),
-    DateOfBirth: yup.string().required()
+    Address: yup.string().required()
   })
   .required();
 

@@ -19,7 +19,7 @@ const Login = () => {
     onSuccess: (data) => {
       setCurrentUser(data);
       setAuth(true);
-      localStorage.setItem('currentUser', JSON.stringify(data));
+      localStorage.setItem('currentUser', JSON.stringify(data?.details));
       localStorage.setItem('isAuth', true);
       navigate('/');
     }

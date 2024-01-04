@@ -1,35 +1,6 @@
 import { BarsArrowUpIcon, ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { useQuery } from '@tanstack/react-query';
-import { getAllRooms, getDormitory, getDormitoryRoom } from 'API/room';
-import { useEffect, useState } from 'react';
 
 export default function SectionHeaderWithSearch({ onSearch }) {
-  const { data: dormDataReturned } = useQuery({
-    queryKey: ['dorms'],
-    queryFn: getDormitory
-  });
-
-  const { data: roomsData } = useQuery({
-    queryKey: ['rooms'],
-    queryFn: getAllRooms
-  });
-
-  const [dormData, setDormData] = useState([]);
-
-  useEffect(() => {
-    if (dormDataReturned && roomsData) {
-      const updatedDormData = dormDataReturned.map((dorm) => {
-        const roomIds = dorm.Room || [];
-        const roomsInDorm = roomsData.filter((room) => roomIds.includes(room._id));
-        return { ...dorm, Room: roomsInDorm };
-      });
-
-      setDormData(updatedDormData);
-    }
-  }, [dormDataReturned, roomsData]);
-
-  console.log(dormData);
-
   return (
     <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
       <h3 className="text-base font-semibold leading-6 text-gray-900">Danh sách phòng</h3>

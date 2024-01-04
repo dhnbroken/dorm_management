@@ -1,23 +1,34 @@
-export default function DatePicker({ register }) {
-  return (
-    <div className="relative max-w-sm">
-      <div className="absolute inset-y-0 end-4 flex items-center ps-3.5 pointer-events-none">
-        <svg
-          className="w-4 h-4 text-gray-500 dark:text-gray-400"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-        </svg>
-      </div>
-      <input
-        type="date"
-        className="custom_select_field date-input"
-        placeholder="Select date"
-        {...register('DateOfBirth')}
-      />
-    </div>
+import dayjs from 'dayjs';
+import { DatePicker as CustomDatePicker } from 'antd';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+
+export default function DatePicker({ setDob, defaultValue, isStudent }) {
+  const onChange = (date, dateString) => {
+    setDob(dateString);
+  };
+
+  const [date, setDate] = useState(null);
+
+  useEffect(() => {
+    !!defaultValue && setDate(moment(defaultValue).format('DD/MM/YYYY'));
+  }, [defaultValue]);
+
+  return !!date ? (
+    <CustomDatePicker
+      disabled={isStudent}
+      format={'DD/MM/YYYY'}
+      className="custom_select_field date-input disabled:bg-slate-100/70 disabled:cursor-not-allowed"
+      onChange={onChange}
+      defaultValue={dayjs(date, 'DD/MM/YYYY')}
+    />
+  ) : (
+    <CustomDatePicker
+      disabled={isStudent}
+      format={'DD/MM/YYYY'}
+      className="custom_select_field date-input disabled:bg-slate-100/70 disabled:cursor-not-allowed"
+      placeholder={'DD/MM/YYYY'}
+      onChange={onChange}
+    />
   );
 }

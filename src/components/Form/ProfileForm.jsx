@@ -43,7 +43,7 @@ const InputProfile = ({
   );
 };
 
-const ProfileForm = ({ data, isStudent }) => {
+const ProfileForm = ({ dataSource, isStudent, next, isSignUp = false, setInformationData, setDob }) => {
   const navigate = useNavigate();
   const {
     register,
@@ -53,31 +53,23 @@ const ProfileForm = ({ data, isStudent }) => {
     resolver: yupResolver(profileSchema)
   });
 
-  const [informationData, setInformationData] = useState({});
+  const [imagePreview, setImagePreview] = useState('');
 
-  const createAccountInformation = useMutation({
-    mutationFn: createStudentInformation,
-    onSuccess: () => {
-      toast.success('Tạo tài khoản cho sinh viên thành công');
+  const onChangeImage = (event) => {
+    if (!event.target.files) {
+      return;
     }
-  });
+    const file = event.target.files[0];
+    const imageURLs = URL.createObjectURL(file);
 
-  const createAccountStudent = useMutation({
-    mutationFn: createStudentAccount,
-    onSuccess: () => {
-      createAccountInformation.mutate({ ...informationData, Matk: 'Password@123' });
-    }
-  });
+    setImagePreview(imageURLs);
+  };
 
   const onSubmit = (data) => {
-    const postData = { ...data, DateOfBirth: moment(data.DateOfBirth).toDate() };
+    const postData = { ...data };
     setInformationData(postData);
 
-    createAccountStudent.mutate({
-      CMND: data?.CMND,
-      MatKhau: 'Password@123',
-      RoleId: process.env.REACT_APP_STUDENT_ROLE_ID
-    });
+    next();
   };
 
   return (
@@ -85,7 +77,13 @@ const ProfileForm = ({ data, isStudent }) => {
       <div className="space-y-10">
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-8 xl:grid-cols-3">
           <div className="px-4 sm:px-0">
-            <img src={data?.imageUrl} alt="" />
+            <img
+              src={
+                imagePreview ||
+                'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80'
+              }
+              alt=""
+            />
           </div>
 
           <form
@@ -105,7 +103,7 @@ const ProfileForm = ({ data, isStudent }) => {
                       type={item.type}
                       register={register}
                       errors={errors}
-                      defaultValue={data}
+                      defaultValue={dataSource}
                       isStudent={isStudent}
                     />
                   </div>
@@ -133,6 +131,8 @@ const ProfileForm = ({ data, isStudent }) => {
                     register={register}
                     errors={errors}
                     placeholder="Vd: 2019-2023"
+                    isStudent={!isSignUp && true}
+                    defaultValue={dataSource}
                   />
                 </div>
 
@@ -163,7 +163,7 @@ const ProfileForm = ({ data, isStudent }) => {
                     <select
                       {...register('GioiTinh')}
                       disabled={isStudent}
-                      className={`custom_select_field ${isStudent && 'bg-slate-100/70 cursor-not-allowed'}`}
+                      className={`custom_select_field disabled:bg-slate-100/70 disabled:cursor-not-allowed`}
                     >
                       <option>Nam</option>
                       <option>Nữ</option>
@@ -176,7 +176,12 @@ const ProfileForm = ({ data, isStudent }) => {
                     Ngày sinh
                   </label>
                   <div className="mt-2">
-                    <DatePicker register={register} />
+                    <DatePicker
+                      register={register}
+                      defaultValue={dataSource?.DateOfBirth}
+                      setDob={setDob}
+                      isStudent={!isSignUp && true}
+                    />
                   </div>
                 </div>
 
@@ -188,12 +193,9 @@ const ProfileForm = ({ data, isStudent }) => {
                     <div className="text-center">
                       <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
                       <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                        <label
-                          htmlFor="file-upload"
-                          className="relative flex-1 cursor-pointer rounded-md  bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                        >
+                        <label className="relative flex-1 cursor-pointer rounded-md  bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                           Tải ảnh lên
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                          <input type="file" className="sr-only" onChange={onChangeImage} accept="images/*" />
                         </label>
                       </div>
                       <p className="text-xs leading-5 text-gray-600">PNG, JPG, JPEG</p>
@@ -202,22 +204,24 @@ const ProfileForm = ({ data, isStudent }) => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-              <button
-                type="button"
-                onClick={() => navigate('/')}
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Hủy
-              </button>
-              <button
-                type="submit"
-                disabled={isStudent}
-                className={`custom_save_button ${isStudent && '!bg-indigo-500'}`}
-              >
-                Lưu
-              </button>
-            </div>
+            {isSignUp && (
+              <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                <button
+                  type="button"
+                  onClick={() => navigate('/')}
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={isStudent}
+                  className={`custom_save_button ${isStudent && '!bg-indigo-500'}`}
+                >
+                  Tiếp tục
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>
