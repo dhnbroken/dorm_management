@@ -6,7 +6,7 @@ export const getAllBills = async () => {
 };
 
 export const getBillDetail = async ({ CMND }) => {
-  const res = await axiosInstance.get(`/hd`, { params: { CMND } });
+  const res = await axiosInstance.get(`/hd/student`, { params: { CMND } });
   return res.data;
 };
 

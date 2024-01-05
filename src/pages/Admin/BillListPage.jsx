@@ -2,12 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllBills, updateBill } from 'API/bill';
 import { getAllRooms } from 'API/room';
 import { Modal, Space } from 'antd';
-import { DeleteButton } from 'components/Button/DeleteButton';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import InputWithLabel from 'components/Input/InputWithLabel';
 import EditIcon from 'components/icons/EditIcon';
-import WarningIcon from 'components/icons/Warning';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -119,6 +117,8 @@ const BillListPage = () => {
       }
     });
   };
+
+  console.log(allBills);
   return (
     <div className="p-8">
       <div className="text-xl font-semibold mb-8">Danh sách hóa đơn</div>

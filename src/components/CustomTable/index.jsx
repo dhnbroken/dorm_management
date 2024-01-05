@@ -18,6 +18,7 @@ const CustomTable = ({
   return (
     <div className="">
       <Table
+        rowKey={'_id'}
         className="custom-table"
         bordered
         loading={loading}
