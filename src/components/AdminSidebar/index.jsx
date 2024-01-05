@@ -8,7 +8,8 @@ import {
   HomeIcon,
   UsersIcon
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { GlobalContextProvider } from 'context/GlobalContext';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const navigation = [
@@ -48,6 +49,9 @@ function classNames(...classes) {
 
 export default function AdminSidebar() {
   const [active, setActive] = useState('dashboard');
+
+  const { profileData } = useContext(GlobalContextProvider);
+  console.log(profileData);
   const navigate = useNavigate();
   return (
     <div className="hidden lg:flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-6">
@@ -133,7 +137,7 @@ export default function AdminSidebar() {
                 alt=""
               />
               <span className="sr-only">Your profile</span>
-              <span aria-hidden="true">Tom Cook</span>
+              <span aria-hidden="true">{profileData?.HoTen}</span>
             </Link>
           </li>
         </ul>

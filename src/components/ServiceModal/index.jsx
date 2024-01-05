@@ -30,8 +30,9 @@ const ServiceModal = ({ keyService, isOpen, onCancel }) => {
         break;
     }
   }, [keyService]);
+
   const { data: billDetail } = useQuery({
-    queryFn: () => getBillDetail({ id: profileData?._id }),
+    queryFn: () => getBillDetail({ CMND: profileData?.CMND }),
     queryKey: ['bill_detail']
   });
 
