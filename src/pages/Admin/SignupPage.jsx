@@ -39,7 +39,7 @@ const SignupPage = () => {
   useEffect(() => {
     if (isSuccess) {
       const newArray = roomsData.map((room) => ({
-        value: room.Title,
+        value: room._id,
         label: room.Title
       }));
 
