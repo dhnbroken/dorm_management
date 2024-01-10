@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import './auth.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { login } from 'API/auth';
 import { Authenticate } from './AuthContext';
 import { toast } from 'react-toastify';
+import { getProfileInformation } from 'API/user';
+import { GlobalContextProvider } from 'context/GlobalContext';
 
 const Login = () => {
   //User Details View
@@ -14,11 +16,23 @@ const Login = () => {
   // const queryClient = useQueryClient();
 
   const { setCurrentUser, setAuth } = useContext(Authenticate);
+  const { setDataUser } = useContext(GlobalContextProvider);
+
+  const loginUser = async (userId) => {
+    try {
+      const res = await getProfileInformation({ userId });
+      setDataUser(res);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       setCurrentUser(data);
+      loginUser(data?.details?._id);
       setAuth(true);
       localStorage.setItem('currentUser', JSON.stringify(data?.details));
       localStorage.setItem('isAuth', true);

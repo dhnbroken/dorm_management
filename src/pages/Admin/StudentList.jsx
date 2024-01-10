@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAllRooms } from 'API/room';
-import { deleteStudent, getAllStudent } from 'API/user';
+import { deleteAccount, deleteStudent, getAllStudent } from 'API/user';
 import { Modal, Space } from 'antd';
 import { DeleteButton } from 'components/Button/DeleteButton';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
@@ -10,7 +9,7 @@ import EditIcon from 'components/icons/EditIcon';
 import WarningIcon from 'components/icons/Warning';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -21,11 +20,6 @@ const StudentList = () => {
     queryFn: getAllStudent
   });
 
-  const { data: roomsData } = useQuery({
-    queryKey: ['all_rooms_student'],
-    queryFn: getAllRooms
-  });
-
   const { profileData } = useContext(GlobalContextProvider);
 
   const [isModalDelete, setIsModalDelete] = useState(false);
@@ -34,34 +28,11 @@ const StudentList = () => {
   const [isModalEdit, setIsModalEdit] = useState(false);
   const [editData, setEditData] = useState({});
 
-  const [combineData, setCombineData] = useState([]);
-
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
-
-  useEffect(() => {
-    if (studentList && roomsData) {
-      const getRoomById = (roomId) => {
-        return roomsData?.find((room) => room._id === roomId);
-      };
-
-      const combineStudentWithRoom = (student) => {
-        const studentWithRoom = { ...student }; // Tạo một bản sao của sinh viên để tránh sửa đổi dữ liệu gốc
-        if (student?.Room && student.Room.length > 0) {
-          studentWithRoom.Room = student?.Room?.map((roomId) => getRoomById(roomId));
-        }
-
-        return studentWithRoom;
-      };
-
-      const usersWithRooms = studentList?.map((student) => combineStudentWithRoom(student));
-
-      setCombineData(usersWithRooms);
-    }
-  }, [studentList, roomsData]);
 
   const columns = [
     {
@@ -88,7 +59,7 @@ const StudentList = () => {
       title: 'Phòng',
       dataIndex: 'Room',
       render: (_, record) => {
-        return record.Room.map((room) => room.Title);
+        return record?.room?.roomTitle;
       }
     },
     {
@@ -131,12 +102,21 @@ const StudentList = () => {
   const deleteUser = useMutation({
     mutationFn: deleteStudent,
     onSuccess: () => {
-      toast.success('Xóa thành công', { autoClose: 2000 });
-      setIsModalDelete(false);
-      queryClient.invalidateQueries({ queryKey: ['All_Student'] });
+      deleteAccountUser.mutate({
+        id: dataDelete?._id
+      });
     },
     onError: () => {
       toast.error('Có lỗi xảy ra, xin thử lại');
+    }
+  });
+
+  const deleteAccountUser = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: () => {
+      toast.success('Xóa thành công', { autoClose: 2000 });
+      setIsModalDelete(false);
+      queryClient.invalidateQueries({ queryKey: ['All_Student'] });
     }
   });
 
@@ -147,12 +127,10 @@ const StudentList = () => {
     });
   };
 
-  console.log(combineData);
-
   return (
     <div className="p-8">
       <div className="text-xl font-semibold mb-8">Danh sách sinh viên</div>
-      <CustomTable columns={columns} dataSource={combineData} isPagination={false} />
+      <CustomTable columns={columns} dataSource={studentList} isPagination={false} />
       <Modal open={isModalDelete} onCancel={() => setIsModalDelete(false)} footer={false}>
         <div className="flex justify-center flex-col gap-3">
           <div>

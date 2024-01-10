@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'components/DatePicker';
+import moment from 'moment';
 
 const InputProfile = ({
   htmlFor,
@@ -39,7 +40,7 @@ const InputProfile = ({
   );
 };
 
-const ProfileForm = ({ dataSource, isStudent, next, isSignUp = false, setInformationData, setDob }) => {
+const ProfileForm = ({ dataSource, isStudent, next, isSignUp = false, setInformationData, dob, setDob }) => {
   const navigate = useNavigate();
   const {
     register,
@@ -62,7 +63,7 @@ const ProfileForm = ({ dataSource, isStudent, next, isSignUp = false, setInforma
   };
 
   const onSubmit = (data) => {
-    const postData = { ...data };
+    const postData = { ...data, DateOfBirth: moment(dob, 'DD/MM/YYYY').toDate() };
     setInformationData(postData);
 
     next();
@@ -175,7 +176,7 @@ const ProfileForm = ({ dataSource, isStudent, next, isSignUp = false, setInforma
                     <DatePicker
                       register={register}
                       defaultValue={dataSource?.DateOfBirth}
-                      setDob={setDob}
+                      setSelectedDate={setDob}
                       isStudent={!isSignUp && true}
                     />
                   </div>

@@ -3,9 +3,9 @@ import { DatePicker as CustomDatePicker } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 
-export default function DatePicker({ setDob, defaultValue, isStudent }) {
+export default function DatePicker({ setSelectedDate, defaultValue, isStudent, className }) {
   const onChange = (date, dateString) => {
-    setDob(dateString);
+    setSelectedDate(dateString);
   };
 
   const [date, setDate] = useState(null);
@@ -18,7 +18,7 @@ export default function DatePicker({ setDob, defaultValue, isStudent }) {
     <CustomDatePicker
       disabled={isStudent}
       format={'DD/MM/YYYY'}
-      className="custom_select_field date-input disabled:bg-slate-100/70 disabled:cursor-not-allowed"
+      className={`custom_select_field date-input disabled:bg-slate-100/70 disabled:cursor-not-allowed ${className}`}
       onChange={onChange}
       defaultValue={dayjs(date, 'DD/MM/YYYY')}
     />
@@ -26,7 +26,7 @@ export default function DatePicker({ setDob, defaultValue, isStudent }) {
     <CustomDatePicker
       disabled={isStudent}
       format={'DD/MM/YYYY'}
-      className="custom_select_field date-input disabled:bg-slate-100/70 disabled:cursor-not-allowed"
+      className={`custom_select_field date-input disabled:bg-slate-100/70 disabled:cursor-not-allowed ${className}`}
       placeholder={'DD/MM/YYYY'}
       onChange={onChange}
     />

@@ -1,20 +1,24 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import InputWithLabel from 'components/Input/InputWithLabel';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useMutation } from '@tanstack/react-query';
+import { changePassword } from 'API/auth';
+import { toast } from 'react-toastify';
+import { GlobalContextProvider } from 'context/GlobalContext';
 
 const schema = yup
   .object({
-    password: yup
+    newPassword: yup
       .string()
       .required('Please Enter your password')
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
         'Mật khẩu phải có ít nhất 8 ký tự, chữ thường, chữ hoa, số và ký tự đặc biệt'
       ),
-    passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Mật khẩu phải khớp')
+    passwordConfirmation: yup.string().oneOf([yup.ref('newPassword'), null], 'Mật khẩu phải khớp')
   })
   .required();
 
@@ -27,9 +31,21 @@ export default function ChangePassModal({ open, setOpen }) {
   } = useForm({
     resolver: yupResolver(schema)
   });
-  const onSubmit = (data) => {
-    // handle change pass
 
+  const { profileData } = useContext(GlobalContextProvider);
+
+  const handleChangePassword = useMutation({
+    mutationFn: changePassword,
+    onSuccess: () => {
+      toast.success('Đổi mật khẩu thành công');
+    }
+  });
+
+  const onSubmit = (formData) => {
+    handleChangePassword.mutate({
+      id: profileData.Matk,
+      data: formData
+    });
     resetForm();
   };
 
@@ -71,13 +87,18 @@ export default function ChangePassModal({ open, setOpen }) {
                         Đổi mật khẩu
                       </Dialog.Title>
                     </div>
-                    <InputWithLabel label={'Mật khẩu hiện tại'} type="password" />
+                    <InputWithLabel
+                      label={'Mật khẩu hiện tại'}
+                      type="password"
+                      register={register}
+                      registerKey={'oldPassword'}
+                    />
                     <InputWithLabel
                       label={'Mật khẩu mới'}
                       type="password"
                       register={register}
-                      registerKey={'password'}
-                      errorMessage={errors?.password?.message}
+                      registerKey={'newPassword'}
+                      errorMessage={errors?.newPassword?.message}
                     />
                     <InputWithLabel
                       label={'Nhập lại mật khẩu mới'}

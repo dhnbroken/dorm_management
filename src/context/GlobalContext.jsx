@@ -1,21 +1,30 @@
-import { createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { ProjectContext } from './context';
 import { useQuery } from '@tanstack/react-query';
 import { getProfileInformation } from 'API/user';
 
 export const GlobalContextProvider = createContext(ProjectContext);
 export const GlobalStoreContext = ({ children }) => {
-  const dataUser = JSON.parse(localStorage.getItem('currentUser'));
+  const [dataUser, setDataUser] = useState();
 
-  const { data: profileData } = useQuery({
-    queryKey: ['user_profile'],
-    queryFn: () => getProfileInformation({ userId: dataUser?._id }),
-    enabled: !!dataUser?._id && !!dataUser?.CMND,
-    retry: 1
-  });
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    getCurrentUser(currentUser._id);
+  }, []);
+
+  const getCurrentUser = async (userId) => {
+    try {
+      const res = await getProfileInformation({ userId });
+      setDataUser(res);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const valueContext = {
-    profileData
+    profileData: dataUser,
+    setDataUser
   };
   return <GlobalContextProvider.Provider value={valueContext}>{children}</GlobalContextProvider.Provider>;
 };

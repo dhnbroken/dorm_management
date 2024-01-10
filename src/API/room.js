@@ -25,10 +25,9 @@ export const addRoom = async ({ id, data }) => {
   return res.data;
 };
 
-export const updateRoom = async ({ id, CMND, data }) => {
+export const updateRoom = async ({ id, data }) => {
   const res = await axiosInstance.put(`/rooms/${id}`, {
-    CMND,
-    RoomNumbers: data
+    roomMembers: data
   });
   return res.data;
 };

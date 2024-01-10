@@ -30,8 +30,13 @@ const navigation = [
         href: ''
       },
       {
-        label: 'Xem hóa đơn',
+        label: 'Gia hạn',
         key: '4',
+        href: ''
+      },
+      {
+        label: 'Xem hóa đơn',
+        key: '5',
         href: ''
       }
     ]

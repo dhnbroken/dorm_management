@@ -1,8 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getAllRooms, getRoom, updateRoom } from 'API/room';
+import { createBill } from 'API/bill';
+import { getAllRooms, getDormitory, getRoom, updateRoom } from 'API/room';
 import { createStudentAccount, createStudentInformation } from 'API/user';
 import { Select, Steps } from 'antd';
+import CustomTable from 'components/CustomTable';
 import ProfileForm from 'components/Form/ProfileForm';
+import SignUpRoom from 'components/SelectRoom';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
@@ -20,35 +23,46 @@ const SignupPage = () => {
   const [dob, setDob] = useState('');
   const [room, setRoom] = useState();
 
+  const [selectedRoom, setSelectedRoom] = useState('');
+  const [dormData, setDormData] = useState();
+  const [billData, setBillData] = useState();
+
   const { data: roomsData, isSuccess } = useQuery({
     queryKey: ['rooms'],
     queryFn: getAllRooms,
     staleTime: 5000
   });
 
-  const { data: RoomData, refetch } = useQuery({
-    queryKey: ['detail_room'],
-    queryFn: () => getRoom(room),
-    enabled: !!room
+  const { data: dormsReturnData } = useQuery({
+    queryKey: ['dorms'],
+    queryFn: getDormitory
   });
 
   useEffect(() => {
-    refetch();
-  }, [room]);
+    if (dormsReturnData && roomsData) {
+      const updatedDormData = dormsReturnData?.map((dorm) => {
+        const roomIds = dorm.Room || [];
+        const roomsInDorm = roomsData.filter((room) => roomIds.includes(room?._id));
+        return { ...dorm, Room: roomsInDorm };
+      });
+
+      setDormData(updatedDormData);
+    }
+  }, [dormsReturnData, roomsData]);
 
   useEffect(() => {
-    if (isSuccess) {
-      const newArray = roomsData.map((room) => ({
-        value: room._id,
-        label: room.Title
+    if (isSuccess && dormData) {
+      const newArray = dormData?.map((room) => ({
+        value: JSON.stringify(room.Room),
+        label: room.Name
       }));
 
       setOptions(newArray);
     }
-  }, [isSuccess]);
+  }, [isSuccess, dormData]);
 
   const handleChange = (value) => {
-    setRoom(value);
+    setRoom(JSON.parse(value));
   };
 
   const next = () => {
@@ -66,8 +80,13 @@ const SignupPage = () => {
       createAccountInformation.mutate({
         ...informationData,
         Matk: res.id,
-        DateOfBirth: moment(dob, 'DD/MM/YYYY').toDate(),
-        Room: [room]
+        room: {
+          roomId: selectedRoom._id,
+          roomTitle: selectedRoom?.Title,
+          dateIn: moment().toDate(),
+          dateOut: moment().add(6, 'months').toDate(),
+          status: 0
+        }
       });
     },
     onError: () => {
@@ -78,15 +97,23 @@ const SignupPage = () => {
   const createAccountInformation = useMutation({
     mutationFn: createStudentInformation,
     onSuccess: (res) => {
+      setBillData(res);
+      const { HoTen, _id, CMND, Mssv, Truong, Phone, Email } = res;
+
       updateSelectedRoom.mutate({
-        id: room,
-        CMND: profileData.CMND,
+        id: res?.room?.roomId,
         data: [
-          ...RoomData?.RoomNumbers,
+          ...selectedRoom?.roomMembers,
           {
-            _id: res?.Matk,
-            number: RoomData.length + 1,
-            unavailableDates: moment().add(6, 'months').toDate()
+            HoTen,
+            userId: _id,
+            Mssv,
+            CMND,
+            Truong,
+            Phone,
+            Email,
+            dateIn: res?.room?.dateIn,
+            dateOut: res?.room?.dateOut
           }
         ]
       });
@@ -97,7 +124,7 @@ const SignupPage = () => {
   });
 
   const handleRegister = () => {
-    if (RoomData) {
+    if (selectedRoom) {
       createAccountStudent.mutate({
         CMND: informationData?.CMND,
         MatKhau: 'Password@123',
@@ -109,43 +136,64 @@ const SignupPage = () => {
   const steps = [
     {
       title: 'Thông tin cá nhân',
-      content: <ProfileForm next={next} isSignUp setInformationData={setInformationData} setDob={setDob} />
+      content: (
+        <ProfileForm
+          next={next}
+          isSignUp
+          setInformationData={setInformationData}
+          setDob={setDob}
+          dob={dob}
+          dataSource={informationData}
+        />
+      )
     },
     {
       title: 'Phòng',
       content: (
-        <div className="bg-white rounded-md">
-          <div className="flex flex-col justify-center items-center p-16">
-            <div>
-              <div>Phòng</div> <br />
-              <Select
-                style={{
-                  width: 120
-                }}
-                onChange={handleChange}
-                options={options}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end w-full px-8 py-4 gap-4">
-            <button className=" bg-red-500 p-3 px-6 text-white rounded-xl" onClick={prev}>
-              Quay lại
-            </button>
-            <button className=" bg-blue-500 p-3 px-6 text-white rounded-xl" onClick={handleRegister}>
-              Gửi
-            </button>
-          </div>
-        </div>
+        <SignUpRoom
+          handleChange={handleChange}
+          options={options}
+          handleRegister={handleRegister}
+          prev={prev}
+          roomId={room}
+          setSelectedRoom={setSelectedRoom}
+          selectedRoom={selectedRoom}
+        />
       )
     }
   ];
 
-  const items = steps.map((item) => ({ key: item.title, title: item.title }));
+  const items = steps?.map((item) => ({ key: item.title, title: item.title }));
 
   const updateSelectedRoom = useMutation({
     mutationFn: updateRoom,
     onSuccess: () => {
+      createRoomBill.mutate({
+        data: {
+          title: 'Tiền phòng',
+          roomId: billData.room?.roomId,
+          price: selectedRoom.Price,
+          status: 0,
+          CMND: billData.CMND,
+          userId: billData._id,
+          Mssv: billData.CMND,
+          roomName: selectedRoom.Title,
+          dateIn: billData?.room?.dateIn,
+          dateOut: billData?.room?.dateOut
+        }
+      });
+
       toast.success('Tạo tài khoản cho sinh viên thành công');
+      // navigate('/admin');
+    },
+    onError: () => {
+      toast.error('Có lỗi xảy ra, xin thử lại');
+    }
+  });
+
+  const createRoomBill = useMutation({
+    mutationFn: createBill,
+    onSuccess: () => {
       navigate('/admin');
     },
     onError: () => {

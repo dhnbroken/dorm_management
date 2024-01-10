@@ -116,17 +116,17 @@ export default function RoomList() {
                           <span className="sr-only">Total comments</span>
                           <UsersIcon
                             className={`h-6 w-6 text-gray-400 ${
-                              room?.StatusId !== 'Available' ? 'text-red-500' : 'text-green-500'
+                              room?.availableSlot <= 0 ? 'text-red-500' : 'text-green-500'
                             }`}
                             aria-hidden="true"
                           />
                         </dt>
                         <dd
                           className={`text-sm leading-6 text-gray-900 ${
-                            room?.StatusId !== 'Available' ? 'text-red-500' : 'text-green-500'
+                            room?.availableSlot <= 0 ? 'text-red-500' : 'text-green-500'
                           }`}
                         >
-                          {room?.StatusId !== 'Available' ? 'Đã đầy' : 'Còn trống'}
+                          {`${room?.Slot - room?.availableSlot}/${room?.Slot}`}
                         </dd>
                       </div>
                       <div>

@@ -17,7 +17,6 @@ const navigation = [
   {
     name: 'Sinh viên',
     icon: UsersIcon,
-    current: false,
     value: 'student',
     children: [
       { name: 'Danh sách sinh viên', to: '/admin/student/list' },
@@ -27,8 +26,7 @@ const navigation = [
   {
     name: 'Quản lý phòng',
     icon: FolderIcon,
-    current: false,
-    value: 'room',
+    value: 'rooms',
     children: [
       { name: 'Danh sách phòng', to: '/admin/room/list' },
       { name: 'Thêm phòng', to: '/admin/room/add' }
@@ -37,9 +35,14 @@ const navigation = [
   {
     name: 'Quản lý hóa đơn',
     icon: FolderIcon,
-    current: false,
-    value: 'room',
+    value: 'bills',
     children: [{ name: 'Danh sách hóa đơn', to: '/admin/bill/list' }]
+  },
+  {
+    name: 'Quản lý đơn',
+    icon: FolderIcon,
+    value: 'bills',
+    children: [{ name: 'Danh sách đơn', to: '/admin/requests' }]
   }
 ];
 
@@ -51,7 +54,7 @@ export default function AdminSidebar() {
   const [active, setActive] = useState('dashboard');
 
   const { profileData } = useContext(GlobalContextProvider);
-  console.log(profileData);
+
   const navigate = useNavigate();
   return (
     <div className="hidden lg:flex grow flex-col gap-y-2 overflow-y-auto border-r border-gray-200 bg-white px-6">
