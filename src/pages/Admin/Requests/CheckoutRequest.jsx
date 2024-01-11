@@ -3,13 +3,40 @@ import { getAllRequestCheckout, updateRequestCheckout } from 'API/requests';
 import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
-import React from 'react';
+import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
+import React, { useEffect, useState } from 'react';
+import { useDebounce } from 'utils/hook/useDebounce';
 
 const CheckoutRequest = () => {
-  const { data: checkoutRequest, refetch } = useQuery({
+  const {
+    data: checkoutRequest,
+    refetch,
+    isSuccess
+  } = useQuery({
     queryKey: ['all_checkout'],
     queryFn: getAllRequestCheckout
   });
+
+  const [dataQuery, setDataQuery] = useState([]);
+  const [query, setQuery] = useState('');
+  const debouncedValue = useDebounce(query, 500);
+
+  useEffect(() => {
+    if (isSuccess && checkoutRequest) {
+      setDataQuery(checkoutRequest);
+    }
+  }, [isSuccess, checkoutRequest]);
+
+  useEffect(() => {
+    if (checkoutRequest) {
+      let updatedList = [...checkoutRequest];
+      updatedList = updatedList?.filter((item) => {
+        return item?._id.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      });
+      setDataQuery(updatedList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   const getStatus = (statusId) => {
     switch (statusId) {
@@ -84,7 +111,12 @@ const CheckoutRequest = () => {
     }
   });
 
-  return <CustomTable dataSource={checkoutRequest} columns={columns} isPagination={false} />;
+  return (
+    <div>
+      <SectionHeaderWithSearch title={'Danh sách đơn trả phòng'} setQuery={setQuery} placeholder={'Tìm đơn'} />
+      <CustomTable dataSource={dataQuery} columns={columns} isPagination={false} />
+    </div>
+  );
 };
 
 export default CheckoutRequest;

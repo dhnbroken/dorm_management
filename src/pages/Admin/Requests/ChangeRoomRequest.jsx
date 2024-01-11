@@ -3,13 +3,34 @@ import { getAllRequestChange, updateRequestChangeRoom } from 'API/requests';
 import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
-import React from 'react';
+import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
+import React, { useEffect, useState } from 'react';
+import { useDebounce } from 'utils/hook/useDebounce';
 
 const ChangeRoomRequest = () => {
   const { data: changeRequests, refetch } = useQuery({
     queryKey: ['all_change_room'],
     queryFn: getAllRequestChange
   });
+
+  const [dataQuery, setDataQuery] = useState([]);
+  const [query, setQuery] = useState('');
+  const debouncedValue = useDebounce(query, 500);
+
+  useEffect(() => {
+    changeRequests && setDataQuery(changeRequests);
+  }, [changeRequests]);
+
+  useEffect(() => {
+    if (changeRequests) {
+      let updatedList = [...changeRequests];
+      updatedList = updatedList?.filter((item) => {
+        return item?._id.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      });
+      setDataQuery(updatedList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   const getStatus = (statusId) => {
     switch (statusId) {
@@ -93,9 +114,10 @@ const ChangeRoomRequest = () => {
   });
 
   return (
-    <CustomTable dataSource={changeRequests} columns={columns} isPagination={false}>
-      CheckoutRequest
-    </CustomTable>
+    <div>
+      <SectionHeaderWithSearch title={'Danh sách đơn đổi phòng'} setQuery={setQuery} placeholder={'Tìm đơn'} />
+      <CustomTable dataSource={dataQuery} columns={columns} isPagination={false} />
+    </div>
   );
 };
 

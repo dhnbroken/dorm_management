@@ -19,7 +19,6 @@ const StudentProfileHeader = () => {
     try {
       const res = await getProfileInformation({ userId });
       setDataUser(res);
-      // console.log(res);
     } catch (err) {
       console.log(err);
     }

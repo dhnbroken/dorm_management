@@ -28,14 +28,10 @@ const items = [
   }
 ];
 
-const onChange = (key) => {
-  console.log(key);
-};
-
 const RequestsList = () => {
   return (
     <div className="p-8">
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Tabs defaultActiveKey="1" items={items} />
     </div>
   );
 };

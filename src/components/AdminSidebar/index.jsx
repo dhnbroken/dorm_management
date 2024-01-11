@@ -1,13 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import {
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon
-} from '@heroicons/react/24/outline';
+import { FolderIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -41,7 +34,7 @@ const navigation = [
   {
     name: 'Quản lý đơn',
     icon: FolderIcon,
-    value: 'bills',
+    value: 'request',
     children: [{ name: 'Danh sách đơn', to: '/admin/requests' }]
   }
 ];

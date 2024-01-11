@@ -9,11 +9,13 @@ import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import DatePicker from 'components/DatePicker';
 import InputWithLabel from 'components/Input/InputWithLabel';
+import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
 import EditIcon from 'components/icons/EditIcon';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { useDebounce } from 'utils/hook/useDebounce';
 
 const BillListPage = () => {
   const queryClient = useQueryClient();
@@ -37,6 +39,10 @@ const BillListPage = () => {
   const [dateIn, setDateIn] = useState();
   const [dateOut, setDateOut] = useState();
 
+  const [billDataQuery, setBillDataQuery] = useState([]);
+  const [query, setQuery] = useState('');
+  const debouncedValue = useDebounce(query, 500);
+
   useEffect(() => {
     if (allUser) {
       const newArray = allUser?.map((user) => ({
@@ -47,6 +53,32 @@ const BillListPage = () => {
       setUserOptions(newArray);
     }
   }, [allUser]);
+
+  useEffect(() => {
+    setBillDataQuery(allBills);
+  }, [allBills]);
+
+  useEffect(() => {
+    if (allBills) {
+      let updatedList = [...allBills];
+      updatedList = updatedList?.filter((item) => {
+        return deepSearch(item, debouncedValue);
+      });
+      setBillDataQuery(updatedList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
+
+  const deepSearch = (obj, query) => {
+    return Object.values(obj).some((value) => {
+      if (typeof value === 'object' && value !== null) {
+        return deepSearch(value, query);
+      } else if (typeof value === 'string' || value instanceof String) {
+        return value.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      }
+      return false;
+    });
+  };
 
   const { register, handleSubmit, reset } = useForm();
 
@@ -120,8 +152,6 @@ const BillListPage = () => {
       )
     }
   ];
-
-  console.log(allBills);
 
   const updateBillData = useMutation({
     mutationFn: updateBill,
@@ -200,11 +230,11 @@ const BillListPage = () => {
 
   return (
     <div className="p-8">
-      <div className="text-xl font-semibold mb-8">Danh sách hóa đơn</div>
+      <SectionHeaderWithSearch title={'Danh sách hóa đơn'} placeholder={'Tìm hóa đơn'} setQuery={setQuery} />
       <div className="text-end mb-2">
         <PrimaryButton text={'Tạo hóa đơn'} Icon={PlusIcon} onClick={() => setNewBillModal(true)} />
       </div>
-      <CustomTable columns={columns} dataSource={allBills} isPagination={false} />
+      <CustomTable columns={columns} dataSource={billDataQuery} isPagination={false} />
       <Modal open={isModalEdit} onCancel={() => setIsModalEdit(false)} footer={false}>
         <div className="text-center w-full text-xl font-semibold my-3">Sửa thông tin hóa đơn</div>
         <form className="flex justify-center flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>

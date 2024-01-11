@@ -11,6 +11,8 @@ import { Modal } from 'antd';
 import WarningIcon from 'components/icons/Warning';
 import { toast } from 'react-toastify';
 import { GlobalContextProvider } from 'context/GlobalContext';
+import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
+import { useDebounce } from 'utils/hook/useDebounce';
 
 export default function RoomList() {
   const queryClient = useQueryClient();
@@ -30,6 +32,10 @@ export default function RoomList() {
   const [isModalDelete, setIsModalDelete] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(false);
 
+  const [dormDataQuery, setDormDataQuery] = useState([]);
+  const [query, setQuery] = useState('');
+  const debouncedValue = useDebounce(query, 500);
+
   useEffect(() => {
     if (dormDataReturned && roomsData) {
       const updatedDormData = dormDataReturned?.map((dorm) => {
@@ -41,6 +47,25 @@ export default function RoomList() {
       setDormData(updatedDormData);
     }
   }, [dormDataReturned, roomsData]);
+
+  useEffect(() => {
+    setDormDataQuery(dormData);
+  }, [dormData]);
+
+  useEffect(() => {
+    if (dormData) {
+      let updatedList = dormData.map((dorm) => {
+        let filteredRooms = dorm.Room.filter((room) => room.Title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+        return {
+          ...dorm,
+          Room: filteredRooms
+        };
+      });
+      updatedList = updatedList.filter((dorm) => dorm.Room.length > 0); // Lọc các dorm có ít nhất một phòng thỏa mãn điều kiện
+      setDormDataQuery(updatedList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   const handleOpenDeleteModal = (room, dormId) => {
     setIsModalDelete(true);
@@ -73,9 +98,11 @@ export default function RoomList() {
   };
   return (
     <>
+      <SectionHeaderWithSearch title={'Danh sách phòng'} placeholder={'Tìm phòng'} setQuery={setQuery} />
+
       <ul className="divide-y divide-gray-100">
-        {dormData?.map((dorm) => (
-          <div key={dorm.id} className="border-b border-gray-200 pb-5">
+        {dormDataQuery?.map((dorm) => (
+          <div key={dorm._id} className="border-b border-gray-200 pb-5">
             <div className="text-lg font-semibold mt-3">{dorm.Name}</div>
             {dorm.Room?.length &&
               dorm.Room?.map((room) => (
@@ -139,6 +166,7 @@ export default function RoomList() {
           </div>
         ))}
       </ul>
+
       <Modal open={isModalDelete} onCancel={() => setIsModalDelete(false)} footer={false}>
         <div className="flex justify-center flex-col gap-3">
           <div>

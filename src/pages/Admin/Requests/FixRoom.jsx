@@ -3,13 +3,34 @@ import { getAllRequestFixRoom, updateRequestFixRoom } from 'API/requests';
 import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
-import React from 'react';
+import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
+import React, { useEffect, useState } from 'react';
+import { useDebounce } from 'utils/hook/useDebounce';
 
 const FixRoomRequest = () => {
   const { data: fixRequests, refetch } = useQuery({
     queryKey: ['all_fix_request'],
     queryFn: getAllRequestFixRoom
   });
+
+  const [dataQuery, setDataQuery] = useState([]);
+  const [query, setQuery] = useState('');
+  const debouncedValue = useDebounce(query, 500);
+
+  useEffect(() => {
+    fixRequests && setDataQuery(fixRequests);
+  }, [fixRequests]);
+
+  useEffect(() => {
+    if (fixRequests) {
+      let updatedList = [...fixRequests];
+      updatedList = updatedList?.filter((item) => {
+        return item?._id.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      });
+      setDataQuery(updatedList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   const getStatus = (statusId) => {
     switch (statusId) {
@@ -88,7 +109,12 @@ const FixRoomRequest = () => {
     }
   });
 
-  return <CustomTable dataSource={fixRequests} columns={columns} isPagination={false} />;
+  return (
+    <div>
+      <SectionHeaderWithSearch title={'Danh sách đơn sửa phòng'} setQuery={setQuery} placeholder={'Tìm đơn'} />
+      <CustomTable dataSource={dataQuery} columns={columns} isPagination={false} />
+    </div>
+  );
 };
 
 export default FixRoomRequest;

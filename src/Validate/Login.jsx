@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import './auth.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { login } from 'API/auth';
 import { Authenticate } from './AuthContext';
 import { toast } from 'react-toastify';
@@ -11,10 +11,6 @@ import { getProfileInformation } from 'API/user';
 import { GlobalContextProvider } from 'context/GlobalContext';
 
 const Login = () => {
-  //User Details View
-  // const [open, setOpen] = React.useState(false);
-  // const queryClient = useQueryClient();
-
   const { setCurrentUser, setAuth } = useContext(Authenticate);
   const { setDataUser } = useContext(GlobalContextProvider);
 
@@ -22,7 +18,6 @@ const Login = () => {
     try {
       const res = await getProfileInformation({ userId });
       setDataUser(res);
-      // console.log(res);
     } catch (err) {
       console.log(err);
     }

@@ -1,9 +1,9 @@
-import { BarsArrowUpIcon, ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
-export default function SectionHeaderWithSearch({ onSearch }) {
+export default function SectionHeaderWithSearch({ title, placeholder, setQuery }) {
   return (
     <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
-      <h3 className="text-base font-semibold leading-6 text-gray-900">Danh sách phòng</h3>
+      <h3 className="text-base font-semibold leading-6 text-gray-900">{title}</h3>
       <div className="mt-3 sm:ml-4 sm:mt-0">
         <label htmlFor="mobile-search-candidate" className="sr-only">
           Tìm kiếm
@@ -21,25 +21,18 @@ export default function SectionHeaderWithSearch({ onSearch }) {
               name="mobile-search-candidate"
               id="mobile-search-candidate"
               className="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:hidden"
-              placeholder="Search"
+              placeholder={placeholder}
+              onChange={(e) => setQuery(e.target.value)}
             />
             <input
               type="text"
               name="desktop-search-candidate"
               id="desktop-search-candidate"
               className="hidden w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-sm leading-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:block"
-              placeholder="Tìm phòng"
+              placeholder={placeholder}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          <button
-            type="button"
-            onClick={onSearch}
-            className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            <BarsArrowUpIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-            Lọc
-            <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
-          </button>
         </div>
       </div>
     </div>

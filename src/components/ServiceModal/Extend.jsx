@@ -15,8 +15,6 @@ const ExtendForm = ({ title, onCancel }) => {
 
   const [newDateOut, setNewDateOut] = useState();
 
-  console.log(newDateOut);
-
   const onSubmit = () => {
     if (newDateOut) {
       const data = {

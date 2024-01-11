@@ -5,16 +5,19 @@ import { DeleteButton } from 'components/Button/DeleteButton';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import InputWithLabel from 'components/Input/InputWithLabel';
+import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
 import EditIcon from 'components/icons/EditIcon';
 import WarningIcon from 'components/icons/Warning';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { useDebounce } from 'utils/hook/useDebounce';
 
 const StudentList = () => {
   const queryClient = useQueryClient();
+
   const { data: studentList } = useQuery({
     queryKey: ['All_Student'],
     queryFn: getAllStudent
@@ -28,12 +31,35 @@ const StudentList = () => {
   const [isModalEdit, setIsModalEdit] = useState(false);
   const [editData, setEditData] = useState({});
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm();
+  const [studentListQuery, setStudentListQuery] = useState([]);
+  const [query, setQuery] = useState('');
+  const debouncedValue = useDebounce(query, 500);
+
+  useEffect(() => {
+    setStudentListQuery(studentList);
+  }, [studentList]);
+
+  useEffect(() => {
+    if (studentList) {
+      let updatedList = [...studentList];
+
+      updatedList = updatedList?.filter((item) => {
+        const values = Object.values(item);
+        const isMatch = values.some((value) => {
+          if (typeof value === 'string' || value instanceof String) {
+            return value.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+          }
+          return false;
+        });
+        return isMatch;
+      });
+
+      setStudentListQuery(updatedList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
+
+  const { register, handleSubmit, reset } = useForm();
 
   const columns = [
     {
@@ -49,8 +75,13 @@ const StudentList = () => {
       dataIndex: 'HoTen'
     },
     {
+      title: 'Họ tên',
+      dataIndex: 'CMND'
+    },
+    {
       title: 'Phòng',
       dataIndex: 'Room',
+      width: '50px',
       render: (_, record) => {
         return record?.room?.roomTitle;
       }
@@ -89,7 +120,6 @@ const StudentList = () => {
             text="Cập nhật"
             Icon={EditIcon}
             onClick={() => {
-              console.log(record);
               setIsModalEdit(true);
               setEditData(record);
             }}
@@ -159,8 +189,9 @@ const StudentList = () => {
 
   return (
     <div className="p-8">
-      <div className="text-xl font-semibold mb-8">Danh sách sinh viên</div>
-      <CustomTable columns={columns} dataSource={studentList} isPagination={false} />
+      {/* <div className="text-xl font-semibold mb-8">Danh sách sinh viên</div> */}
+      <SectionHeaderWithSearch title={'Danh sách Sinh viên'} placeholder={'Tìm sinh viên'} setQuery={setQuery} />
+      <CustomTable columns={columns} dataSource={studentListQuery} isPagination={false} />
       <Modal open={isModalDelete} onCancel={() => setIsModalDelete(false)} footer={false}>
         <div className="flex justify-center flex-col gap-3">
           <div>

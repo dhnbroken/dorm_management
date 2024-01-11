@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
 import { ProjectContext } from './context';
-import { useQuery } from '@tanstack/react-query';
 import { getProfileInformation } from 'API/user';
 
 export const GlobalContextProvider = createContext(ProjectContext);
@@ -16,7 +15,6 @@ export const GlobalStoreContext = ({ children }) => {
     try {
       const res = await getProfileInformation({ userId });
       setDataUser(res);
-      // console.log(res);
     } catch (err) {
       console.log(err);
     }

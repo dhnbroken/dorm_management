@@ -2,19 +2,16 @@ import { useParams } from 'react-router-dom';
 import ProfileCard from 'components/ProfileCard';
 import { useQuery } from '@tanstack/react-query';
 import { getRoom } from 'API/room';
-import { Spin } from 'antd';
 
 export default function RoomDetailPage() {
   const { id } = useParams();
 
-  const { data: roomDetail, isLoading } = useQuery({
+  const { data: roomDetail } = useQuery({
     queryKey: ['room_detail'],
     queryFn: () => getRoom(id)
   });
 
-  return isLoading ? (
-    <Spin />
-  ) : (
+  return (
     <div className="p-8">
       <div className="mx-auto max-w-2xl sm:text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{roomDetail?.Title}</h2>
@@ -25,7 +22,7 @@ export default function RoomDetailPage() {
         {roomDetail &&
           roomDetail.roomMembers.map((person) => (
             <li
-              key={person.id}
+              key={person._id}
               className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow"
             >
               <ProfileCard person={person} />
