@@ -75,7 +75,7 @@ const StudentList = () => {
       dataIndex: 'HoTen'
     },
     {
-      title: 'Họ tên',
+      title: 'CCCD/CMND',
       dataIndex: 'CMND'
     },
     {
@@ -189,7 +189,6 @@ const StudentList = () => {
 
   return (
     <div className="p-8">
-      {/* <div className="text-xl font-semibold mb-8">Danh sách sinh viên</div> */}
       <SectionHeaderWithSearch title={'Danh sách Sinh viên'} placeholder={'Tìm sinh viên'} setQuery={setQuery} />
       <CustomTable columns={columns} dataSource={studentListQuery} isPagination={false} />
       <Modal open={isModalDelete} onCancel={() => setIsModalDelete(false)} footer={false}>
