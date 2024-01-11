@@ -74,13 +74,7 @@ const ProfileForm = ({ dataSource, isStudent, next, isSignUp = false, setInforma
       <div className="space-y-10">
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-8 xl:grid-cols-3">
           <div className="px-4 sm:px-0">
-            <img
-              src={
-                imagePreview ||
-                'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80'
-              }
-              alt=""
-            />
+            <img src={imagePreview || process.env.REACT_APP_DEFAULT_AVATAR} alt="" />
           </div>
 
           <form

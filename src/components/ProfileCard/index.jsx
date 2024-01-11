@@ -7,10 +7,7 @@ const ProfileCard = ({ person }) => {
       <div className="flex flex-1 flex-col p-8">
         <img
           className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
-          src={
-            person?.imageUrl ||
-            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80'
-          }
+          src={person?.imageUrl || process.env.REACT_APP_DEFAULT_AVATAR}
           alt=""
         />
         <h3 className="mt-6 text-sm font-medium text-gray-900">{person.HoTen}</h3>
