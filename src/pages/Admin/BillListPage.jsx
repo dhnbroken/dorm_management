@@ -60,6 +60,13 @@ const BillListPage = () => {
       }
     },
     {
+      title: 'Sinh viên',
+      dataIndex: 'billDetails.Student',
+      render: (_, record) => {
+        return <div className="text-center">{record.billDetails?.HoTen}</div>;
+      }
+    },
+    {
       title: 'Phòng',
       dataIndex: 'billDetails',
       render: (_, record) => {
