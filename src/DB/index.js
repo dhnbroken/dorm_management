@@ -245,3 +245,25 @@ export const universities = [
     name: 'Khoa Y'
   }
 ];
+
+export const getColor = (status) => {
+  switch (status) {
+    case 0:
+      return 'text-red-500';
+    case 1:
+      return 'text-green-500';
+    default:
+      return;
+  }
+};
+
+export const getColorStatus = (status) => {
+  switch (status) {
+    case 1:
+      return 'text-green-500';
+    case 2:
+      return 'text-red-500';
+    default:
+      return '';
+  }
+};

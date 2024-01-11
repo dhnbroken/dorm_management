@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBillDetail } from 'API/bill';
+import { getColor } from 'DB';
 import CustomTable from 'components/CustomTable';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
@@ -56,9 +57,7 @@ const UserBill = ({ title }) => {
       dataIndex: 'status',
       render: (_, record) => {
         return (
-          <div className={`${record?.status === 0 ? 'text-red-500' : 'text-green-500'}`}>
-            {record?.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
-          </div>
+          <div className={getColor(record?.status)}>{record?.status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</div>
         );
       }
     }

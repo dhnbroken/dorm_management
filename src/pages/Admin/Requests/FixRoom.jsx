@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getAllRequestFixRoom, updateRequestFixRoom } from 'API/requests';
+import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import React from 'react';
@@ -9,8 +10,6 @@ const FixRoomRequest = () => {
     queryKey: ['all_fix_request'],
     queryFn: getAllRequestFixRoom
   });
-
-  console.log(fixRequests);
 
   const getStatus = (statusId) => {
     switch (statusId) {
@@ -49,7 +48,7 @@ const FixRoomRequest = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       render: (_, record) => {
-        return getStatus(record.requestStatus);
+        return <div className={`${getColorStatus(record?.requestStatus)}`}>{getStatus(record.requestStatus)}</div>;
       }
     },
     {

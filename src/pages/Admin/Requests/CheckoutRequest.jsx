@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getAllRequestCheckout, updateRequestCheckout } from 'API/requests';
+import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import React from 'react';
@@ -43,7 +44,7 @@ const CheckoutRequest = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       render: (_, record) => {
-        return getStatus(record.requestStatus);
+        return <div className={`${getColorStatus(record?.requestStatus)}`}>{getStatus(record.requestStatus)}</div>;
       }
     },
     {

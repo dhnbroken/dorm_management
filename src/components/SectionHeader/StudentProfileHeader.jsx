@@ -13,6 +13,7 @@ const StudentProfileHeader = () => {
   const { profileData, setDataUser } = useContext(GlobalContextProvider);
   const [open, setOpen] = useState(false);
   const [openChangeBank, setOpenChangeBank] = useState(false);
+  const [openChangePhone, setOpenChangePhone] = useState(false);
 
   const getCurrentUser = async (userId) => {
     try {
@@ -31,6 +32,7 @@ const StudentProfileHeader = () => {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
       getCurrentUser(currentUser._id);
       setOpenChangeBank(false);
+      setOpenChangePhone(false);
       reset();
     }
   });
@@ -62,6 +64,14 @@ const StudentProfileHeader = () => {
           >
             Đổi tài khoản ngân hàng
           </button>
+
+          <button
+            type="button"
+            onClick={() => setOpenChangePhone(true)}
+            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Đổi số điện thoại
+          </button>
         </div>
       </div>
       <ChangePassModal open={open} setOpen={setOpen} />
@@ -71,6 +81,23 @@ const StudentProfileHeader = () => {
           <div className="mt-2">
             <InputWithLabel label={'Ngân hàng hiện tại'} disabled defaultValue={profileData?.NganHang} />
             <InputWithLabel label={'Ngân hàng mới'} register={register} registerKey={'NganHang'} />
+          </div>
+
+          <button
+            type="submit"
+            className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Xác nhận
+          </button>
+        </form>
+      </Modal>
+
+      <Modal open={openChangePhone} onCancel={() => setOpenChangePhone(false)} footer={false}>
+        <div className="text-lg font-semibold w-full text-center">Đổi số điện thoại</div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <div className="mt-2">
+            <InputWithLabel label={'Số điện thoại hiện tại'} disabled defaultValue={profileData?.Phone} />
+            <InputWithLabel label={'Số điện thoại mới'} register={register} registerKey={'Phone'} />
           </div>
 
           <button

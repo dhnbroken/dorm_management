@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getAllRequestExtendChange, updateRequestExtendRoom } from 'API/requests';
+import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import moment from 'moment';
@@ -10,8 +11,6 @@ const ExtendRequest = () => {
     queryKey: ['all_extend'],
     queryFn: getAllRequestExtendChange
   });
-
-  console.log(extendRequest);
 
   const getStatus = (statusId) => {
     switch (statusId) {
@@ -57,7 +56,7 @@ const ExtendRequest = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       render: (_, record) => {
-        return getStatus(record.requestStatus);
+        return <div className={`${getColorStatus(record?.requestStatus)}`}>{getStatus(record.requestStatus)}</div>;
       }
     },
     {
