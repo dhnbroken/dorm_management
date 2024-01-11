@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { getRoom } from 'API/room';
 import { Select } from 'antd';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';

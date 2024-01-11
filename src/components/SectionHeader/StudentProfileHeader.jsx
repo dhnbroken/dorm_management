@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { getProfileInformation, updateStudentInformation } from 'API/user';
 import { Modal } from 'antd';
-import { PrimaryButton } from 'components/Button/PrimaryButton';
 import InputWithLabel from 'components/Input/InputWithLabel';
 import ChangePassModal from 'components/Modal/ChangePass';
 import { GlobalContextProvider } from 'context/GlobalContext';
@@ -10,12 +9,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 const StudentProfileHeader = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { profileData, setDataUser } = useContext(GlobalContextProvider);
   const [open, setOpen] = useState(false);
   const [openChangeBank, setOpenChangeBank] = useState(false);

@@ -1,19 +1,16 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createBill } from 'API/bill';
-import { getAllRooms, getDormitory, getRoom, updateRoom } from 'API/room';
+import { getAllRooms, getDormitory, updateRoom } from 'API/room';
 import { createStudentAccount, createStudentInformation } from 'API/user';
-import { Select, Steps } from 'antd';
-import CustomTable from 'components/CustomTable';
+import { Steps } from 'antd';
 import ProfileForm from 'components/Form/ProfileForm';
 import SignUpRoom from 'components/SelectRoom';
-import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SignupPage = () => {
-  const { profileData } = useContext(GlobalContextProvider);
   const navigate = useNavigate();
 
   const [current, setCurrent] = useState(0);
