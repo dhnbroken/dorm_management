@@ -61,7 +61,7 @@ const ChangeRoomForm = ({ title, onCancel }) => {
       title: 'Tác vụ',
       key: 'action',
       render: (_, record) => {
-        return profileData.room.roomId === record._id ? (
+        return profileData?.room?.roomId === record._id ? (
           <div>Phòng hiện tại</div>
         ) : (
           <div className="flex gap-3">
@@ -91,7 +91,7 @@ const ChangeRoomForm = ({ title, onCancel }) => {
   useEffect(() => {
     if (dormsReturnData && roomsData) {
       const updatedDormData = dormsReturnData?.map((dorm) => {
-        const roomIds = dorm.Room || [];
+        const roomIds = dorm?.Room || [];
         const roomsInDorm = roomsData.filter((room) => roomIds.includes(room?._id));
         return { ...dorm, Room: roomsInDorm };
       });
