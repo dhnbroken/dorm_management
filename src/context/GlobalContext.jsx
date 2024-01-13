@@ -8,7 +8,7 @@ export const GlobalStoreContext = ({ children }) => {
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    getCurrentUser(currentUser._id);
+    getCurrentUser(currentUser?._id);
   }, []);
 
   const getCurrentUser = async (userId) => {
