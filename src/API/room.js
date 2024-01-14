@@ -21,7 +21,7 @@ export const getDormitoryRoom = async (id) => {
 };
 
 export const addRoom = async ({ id, data }) => {
-  const res = await axiosInstance.post(`/rooms/dorm/${id}`, data, { params: { dormitoryId: id } });
+  const res = await axiosInstance.post(`/rooms`, data, { params: { dormitoryId: id } });
   return res.data;
 };
 

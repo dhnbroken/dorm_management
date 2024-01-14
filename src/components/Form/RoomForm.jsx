@@ -62,11 +62,11 @@ const RoomForm = () => {
       data: {
         ...data,
         CMND: profileData?.CMND,
-        StatusId: 'Available',
         St: 'Thu Duc',
         Photos: [],
         RoomNumbers: [],
-        Floor: floor
+        Floor: floor,
+        status: 0
       }
     });
   };
