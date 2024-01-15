@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import './banner.css';
 
-const BookingBanner = () => {
+const Banner = () => {
   return (
     <Box className="BookingBanner relative">
       <div className=" bg-black/[0.65] w-full h-full flex justify-center items-center flex-col">
@@ -15,4 +15,4 @@ const BookingBanner = () => {
   );
 };
 
-export default BookingBanner;
+export default Banner;
