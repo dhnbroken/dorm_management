@@ -100,6 +100,10 @@ const ExtendForm = ({ title, onCancel }) => {
       render: (_, record) => {
         return <div className={`${getColorHistory(record?.requestStatus)}`}>{getStatus(record?.requestStatus)}</div>;
       }
+    },
+    {
+      title: 'Lý do từ chối',
+      dataIndex: 'rejectReason'
     }
   ];
 
