@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRequestChange, requestChangeRoom } from 'API/requests';
 import { getAllRooms, getDormitory } from 'API/room';
-import { getColorHistory, getStatus } from 'DB';
+import { getColorHistory, getStatus } from 'utils/shared';
+
 import { Modal, Select } from 'antd';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';

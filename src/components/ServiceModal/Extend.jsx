@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRequestExtendChange, requestExtendRoom } from 'API/requests';
-import { getColorHistory, getStatus } from 'DB';
 import { Modal } from 'antd';
 import CustomTable from 'components/CustomTable';
 import DatePicker from 'components/DatePicker';
@@ -10,6 +9,7 @@ import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { getColorHistory, getStatus } from 'utils/shared';
 
 const ExtendForm = ({ title, onCancel }) => {
   const { profileData } = useContext(GlobalContextProvider);

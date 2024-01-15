@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRequestCheckout, requestCheckoutRoom } from 'API/requests';
-import { getColorHistory, getStatus } from 'DB';
+import { getColorHistory, getStatus } from 'utils/shared';
+
 import { Modal } from 'antd';
 import CustomTable from 'components/CustomTable';
 import InputWithLabel from 'components/Input/InputWithLabel';
