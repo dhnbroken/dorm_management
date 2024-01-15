@@ -57,7 +57,7 @@ const SignUpRoom = ({ handleChange, options, handleRegister, prev, rooms, setSel
     <div className="bg-white rounded-md">
       <div className="flex flex-col justify-center items-center p-16">
         <div>
-          <div>Phòng</div> <br />
+          <div>Tầng</div> <br />
           <Select
             style={{
               width: 120

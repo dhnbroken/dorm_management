@@ -91,9 +91,10 @@ const ChangeRoomRequest = () => {
     {
       title: 'Tác vụ',
       key: 'action',
+      width: '200px',
       render: (_, record) => {
         return (
-          <div className={`${record.requestStatus !== 0 ? 'min-w-[50px]' : 'max-w-[50px]'}`}>
+          <div>
             {record.requestStatus === 0 && (
               <div className="flex gap-3 items-center">
                 <PrimaryButton text={'Duyệt'} onClick={() => updateRequest(record._id, record.userId, 1)} />

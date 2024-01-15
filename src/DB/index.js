@@ -88,3 +88,27 @@ export const getColorStatus = (status) => {
       return '';
   }
 };
+
+export const getStatus = (statusId) => {
+  switch (statusId) {
+    case 0:
+      return 'Chưa duyệt';
+    case 1:
+      return 'Đã duyệt';
+    case 2:
+      return 'Đã từ chối';
+    default:
+      break;
+  }
+};
+
+export const getColorHistory = (status) => {
+  switch (status) {
+    case 2:
+      return 'text-red-500';
+    case 1:
+      return 'text-green-500';
+    default:
+      return;
+  }
+};
