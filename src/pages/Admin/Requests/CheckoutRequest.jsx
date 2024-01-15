@@ -4,10 +4,14 @@ import { getColorStatus } from 'DB';
 import { PrimaryButton } from 'components/Button/PrimaryButton';
 import CustomTable from 'components/CustomTable';
 import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDebounce } from 'utils/hook/useDebounce';
+import ModalReason from './ModalReason';
+import { GlobalContextProvider } from 'context/GlobalContext';
 
 const CheckoutRequest = () => {
+  const { profileData } = useContext(GlobalContextProvider);
+
   const {
     data: checkoutRequest,
     refetch,
@@ -19,6 +23,11 @@ const CheckoutRequest = () => {
 
   const [dataQuery, setDataQuery] = useState([]);
   const [query, setQuery] = useState('');
+
+  const [updateData, setUpdateData] = useState({});
+  const [reason, setReason] = useState('');
+  const [isOpenReason, setIsOpenReason] = useState(false);
+
   const debouncedValue = useDebounce(query, 500);
 
   useEffect(() => {
@@ -85,7 +94,10 @@ const CheckoutRequest = () => {
               <PrimaryButton
                 text={'Từ chối'}
                 className={'!bg-red-500 !hover:bg-red-400'}
-                onClick={() => updateRequest(record._id, record.userId, 2)}
+                onClick={() => {
+                  setIsOpenReason(true);
+                  setUpdateData(record);
+                }}
               />
             </div>
           )
@@ -99,7 +111,9 @@ const CheckoutRequest = () => {
       id,
       data: {
         userId,
-        requestStatus
+        requestStatus,
+        rejectReason: reason,
+        updatedBy: profileData?.HoTen
       }
     });
   };
@@ -115,6 +129,12 @@ const CheckoutRequest = () => {
     <div>
       <SectionHeaderWithSearch title={'Danh sách đơn trả phòng'} setQuery={setQuery} placeholder={'Tìm đơn'} />
       <CustomTable dataSource={dataQuery} columns={columns} isPagination={false} />
+      <ModalReason
+        isOpen={isOpenReason}
+        setIsOpen={setIsOpenReason}
+        handleReject={() => updateRequest(updateData?._id, updateData?.userId, 2)}
+        setReason={setReason}
+      />
     </div>
   );
 };

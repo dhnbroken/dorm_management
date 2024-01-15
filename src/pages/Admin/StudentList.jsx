@@ -140,7 +140,7 @@ const StudentList = () => {
     mutationFn: deleteStudent,
     onSuccess: () => {
       deleteAccountUser.mutate({
-        id: dataDelete?._id
+        id: dataDelete?.Matk
       });
     },
     onError: () => {

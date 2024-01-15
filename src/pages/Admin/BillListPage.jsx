@@ -102,12 +102,15 @@ const BillListPage = () => {
       title: 'Phòng',
       dataIndex: 'billDetails',
       render: (_, record) => {
-        return <div className="text-center">{record.billDetails?.roomName}</div>;
+        return <div className="text-center">Phòng {record.billDetails?.roomName}</div>;
       }
     },
     {
       title: 'Tổng cộng',
-      dataIndex: 'price'
+      dataIndex: 'price',
+      render: (_, record) => {
+        return <div className="text-center">{record.price?.toLocaleString()}đ</div>;
+      }
     },
     {
       title: 'Trạng thái',

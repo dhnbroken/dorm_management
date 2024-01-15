@@ -94,9 +94,9 @@ const RoomForm = () => {
                 className={`custom_select_field w-full !max-w-full disabled:bg-slate-100/70 disabled:cursor-not-allowed`}
                 {...register('Slot')}
               >
+                <option>2</option>
                 <option>4</option>
                 <option>6</option>
-                <option>8</option>
               </select>
             </div>
 

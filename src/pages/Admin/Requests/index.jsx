@@ -30,7 +30,7 @@ const items = [
 
 const RequestsList = () => {
   return (
-    <div className="p-8">
+    <div className="p-8 h-full">
       <Tabs defaultActiveKey="1" items={items} />
     </div>
   );

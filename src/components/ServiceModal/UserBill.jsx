@@ -25,6 +25,21 @@ const UserBill = ({ title }) => {
       }
     },
     {
+      title: 'Hóa đơn',
+      dataIndex: 'title'
+    },
+    {
+      title: 'Mã hóa đơn',
+      dataIndex: '_id'
+    },
+    {
+      title: 'Tên',
+      dataIndex: 'billDetails?.HoTen',
+      render: (value, record, index) => {
+        return record?.billDetails?.HoTen;
+      }
+    },
+    {
       title: 'MSSV',
       dataIndex: 'Mssv',
       render: (value, record, index) => {
@@ -34,6 +49,8 @@ const UserBill = ({ title }) => {
     {
       title: 'Phòng',
       dataIndex: 'room',
+      width: '70px',
+      align: 'center',
       render: (_, record) => {
         return record?.billDetails?.roomName;
       }
@@ -41,14 +58,26 @@ const UserBill = ({ title }) => {
     {
       title: 'Ngày vào',
       dataIndex: 'DateIn',
+      align: 'center',
       render: (_, record) => {
         return <div>{moment(record?.billDetails?.dateIn).format('DD/MM/YYYY')}</div>;
       }
     },
     {
+      title: 'Tổng tiền',
+      dataIndex: 'price',
+      width: '100px',
+      render: (_, record) => {
+        return <div>{`${record?.price?.toLocaleString()}đ`}</div>;
+      }
+    },
+    {
       title: 'Ngày hết hạn',
       dataIndex: 'dateOut',
+      align: 'center',
+      width: '120px',
       render: (_, record) => {
+        console.log(record);
         return <div>{moment(record?.billDetails?.dateOut).format('DD/MM/YYYY')}</div>;
       }
     },

@@ -50,7 +50,7 @@ const ServiceModal = ({ keyService, isOpen, onCancel }) => {
   };
 
   return (
-    <Modal open={isOpen} onCancel={onCancel} footer={false} width={title !== 'Xem hóa đơn' ? 950 : 600}>
+    <Modal open={isOpen} onCancel={onCancel} footer={false} width={title !== 'Xem hóa đơn' ? 950 : 1200} centered>
       {getModalContent()}
     </Modal>
   );

@@ -32,7 +32,7 @@ const navigation = [
     children: [{ name: 'Danh sách hóa đơn', to: '/admin/bill/list' }]
   },
   {
-    name: 'Quản lý đơn',
+    name: 'Quản lý đơn dịch vụ',
     icon: FolderIcon,
     value: 'request',
     children: [{ name: 'Danh sách đơn', to: '/admin/requests' }]

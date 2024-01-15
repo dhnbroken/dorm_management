@@ -111,9 +111,9 @@ export default function RoomList() {
                   className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 py-5 sm:flex-nowrap"
                 >
                   <div>
-                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                    <p className="text-md font-semibold leading-6 text-gray-900">
                       <Link to={`/admin/room/${room?._id}`} className="hover:underline">
-                        {room?.Title}
+                        Phòng {room?.Title}
                       </Link>
                     </p>
                     <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
@@ -171,7 +171,7 @@ export default function RoomList() {
         <div className="flex justify-center flex-col gap-3">
           <div>
             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-              <div className="text-xl font-semibold leading-6 text-gray-900">Xóa sinh viên</div>
+              <div className="text-xl font-semibold leading-6 text-gray-900">Xóa phòng</div>
               <div className="w-full mt-4 flex justify-center">
                 <div className="mx-auto flex h-32 w-32 flex-shrink-0 items-center justify-center rounded-full bg-red-100">
                   <WarningIcon className="h-28 w-28" />

@@ -14,7 +14,7 @@ export default function RoomDetailPage() {
   return (
     <div className="p-8">
       <div className="mx-auto max-w-2xl sm:text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{roomDetail?.Title}</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl">Phòng {roomDetail?.Title}</h2>
         <p className="my-2 text-lg leading-8 text-gray-600">Danh sách sinh viên</p>
       </div>
 
