@@ -103,7 +103,8 @@ const ExtendForm = ({ title, onCancel }) => {
     },
     {
       title: 'Lý do từ chối',
-      dataIndex: 'rejectReason'
+      dataIndex: 'rejectReason',
+      width: '150px'
     }
   ];
 
