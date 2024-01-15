@@ -130,7 +130,8 @@ const ChangeRoomForm = ({ title, onCancel }) => {
   });
 
   const handleChange = (value) => {
-    setToRoom(JSON.parse(value));
+    const newRooms = JSON.parse(value)?.filter((room) => Number(room?.status) === 0);
+    setToRoom(newRooms);
   };
 
   return (
@@ -154,7 +155,12 @@ const ChangeRoomForm = ({ title, onCancel }) => {
             />
           </div>
           <div className="mt-2">
-            <CustomTable columns={columns} dataSource={toRoom} isPagination={false} />
+            <CustomTable
+              columns={columns}
+              dataSource={toRoom}
+              isPagination={false}
+              scroll={{ x: 'max-content', y: 270 }}
+            />
           </div>
         </div>
       </div>
