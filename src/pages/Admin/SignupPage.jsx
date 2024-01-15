@@ -5,13 +5,15 @@ import { createStudentAccount, createStudentInformation } from 'API/user';
 import { Steps } from 'antd';
 import ProfileForm from 'components/Form/ProfileForm';
 import SignUpRoom from 'components/SelectRoom';
+import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const { profileData } = useContext(GlobalContextProvider);
 
   const [current, setCurrent] = useState(0);
   const [options, setOptions] = useState([]);
@@ -176,7 +178,9 @@ const SignupPage = () => {
           Mssv: billData.CMND,
           roomName: selectedRoom.Title,
           dateIn: billData?.room?.dateIn,
-          dateOut: billData?.room?.dateOut
+          dateOut: billData?.room?.dateOut,
+          createdBy: profileData?.HoTen,
+          updatedBy: profileData?.HoTen
         }
       });
 

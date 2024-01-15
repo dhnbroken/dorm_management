@@ -33,7 +33,7 @@ const UserBill = ({ title }) => {
       dataIndex: '_id'
     },
     {
-      title: 'Tên',
+      title: 'Sinh viên',
       dataIndex: 'billDetails?.HoTen',
       render: (value, record, index) => {
         return record?.billDetails?.HoTen;
@@ -56,14 +56,6 @@ const UserBill = ({ title }) => {
       }
     },
     {
-      title: 'Ngày vào',
-      dataIndex: 'DateIn',
-      align: 'center',
-      render: (_, record) => {
-        return <div>{moment(record?.billDetails?.dateIn).format('DD/MM/YYYY')}</div>;
-      }
-    },
-    {
       title: 'Tổng tiền',
       dataIndex: 'price',
       width: '100px',
@@ -80,6 +72,11 @@ const UserBill = ({ title }) => {
         console.log(record);
         return <div>{moment(record?.billDetails?.dateOut).format('DD/MM/YYYY')}</div>;
       }
+    },
+
+    {
+      title: 'Người tạo',
+      dataIndex: 'updatedBy'
     },
     {
       title: 'Trạng thái',

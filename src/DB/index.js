@@ -3,12 +3,16 @@ import * as yup from 'yup';
 export const profileSchema = yup
   .object({
     HoTen: yup.string().required(),
-    Phone: yup.string().required().length(10),
+    Phone: yup
+      .string()
+      .required()
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .test('len', 'SĐT Phải có 10 hoặc 11 số', (val) => val.length === 10 || val.length === 11),
     CMND: yup
       .string()
       .required()
       .matches(/^[0-9]+$/, 'Must be only digits')
-      .test('len', 'CMND/CCCD Phải có 9 hoặc 12 ký tự', (val) => val.length === 9 || val.length === 12),
+      .test('len', 'CMND/CCCD Phải có 9 hoặc 12 số', (val) => val.length === 9 || val.length === 12),
     Mssv: yup.string().required(),
     Truong: yup.string().required(),
     GioiTinh: yup.string().required(),

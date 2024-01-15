@@ -11,14 +11,16 @@ import DatePicker from 'components/DatePicker';
 import InputWithLabel from 'components/Input/InputWithLabel';
 import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
 import EditIcon from 'components/icons/EditIcon';
+import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'utils/hook/useDebounce';
 
 const BillListPage = () => {
   const queryClient = useQueryClient();
+  const { profileData } = useContext(GlobalContextProvider);
 
   const { data: allBills } = useQuery({
     queryKey: ['all_bills'],
@@ -178,7 +180,8 @@ const BillListPage = () => {
     updateBillData.mutate({
       id: editData?._id,
       data: {
-        status: 1
+        status: 1,
+        updatedBy: profileData?.HoTen
       }
     });
   };
@@ -192,6 +195,7 @@ const BillListPage = () => {
       id: editData?._id,
       data: {
         ...data,
+        updatedBy: profileData?.HoTen,
         billDetails: {
           ...editData.billDetails,
           dateIn: moment(data.dateIn, 'DD/MM/YYYY').toDate(),
@@ -223,7 +227,9 @@ const BillListPage = () => {
       CMND: selectedUser?.CMND,
       userId: selectedUser?._id,
       Mssv: selectedUser?.Mssv,
-      roomName: selectedUser?.room?.roomTitle
+      roomName: selectedUser?.room?.roomTitle,
+      updatedBy: profileData?.HoTen,
+      createdBy: profileData?.HoTen
     };
 
     handleCreateBill.mutate({
