@@ -19,7 +19,6 @@ const PolicyPage = React.lazy(() => import('pages/Public/PolicyPage'));
 
 // Student
 const Student = React.lazy(() => import('pages/Student/StudentProfile'));
-const RoomHistory = React.lazy(() => import('pages/Student/RoomHistory'));
 
 // const { default: Login } = require('Validate/Login');
 const { default: Logout } = require('Validate/Logout');
@@ -48,9 +47,6 @@ const adminRoutes = [
   { path: '/admin/requests', component: RequestsList }
 ];
 
-const studentRoute = [
-  { path: '/student/profile/:id', component: Student },
-  { path: '/student/room/history', component: RoomHistory }
-];
+const studentRoute = [{ path: '/student/profile/:id', component: Student }];
 
 export { authRoutes, publicRoutes, adminRoutes, studentRoute };

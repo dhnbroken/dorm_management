@@ -18,11 +18,6 @@ import { useDebounce } from 'utils/hook/useDebounce';
 const StudentList = () => {
   const queryClient = useQueryClient();
 
-  const { data: studentList } = useQuery({
-    queryKey: ['All_Student'],
-    queryFn: getAllStudent
-  });
-
   const { profileData } = useContext(GlobalContextProvider);
 
   const [isModalDelete, setIsModalDelete] = useState(false);
@@ -33,15 +28,28 @@ const StudentList = () => {
 
   const [studentListQuery, setStudentListQuery] = useState([]);
   const [query, setQuery] = useState('');
+
+  const [itemPage, setItemPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const {
+    data: studentList,
+    refetch,
+    isFetching
+  } = useQuery({
+    queryKey: ['All_Student'],
+    queryFn: () => getAllStudent({ itemPage, currentPage })
+  });
+
   const debouncedValue = useDebounce(query, 500);
 
   useEffect(() => {
-    setStudentListQuery(studentList);
+    setStudentListQuery(studentList?.users);
   }, [studentList]);
 
   useEffect(() => {
     if (studentList) {
-      let updatedList = [...studentList];
+      let updatedList = [...studentList?.users];
 
       updatedList = updatedList?.filter((item) => {
         const values = Object.values(item);
@@ -59,6 +67,11 @@ const StudentList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemPage, currentPage]);
+
   const { register, handleSubmit, reset } = useForm();
 
   const columns = [
@@ -67,7 +80,7 @@ const StudentList = () => {
       width: 50,
       align: 'center',
       render: (value, record, index) => {
-        return index + 1;
+        return (currentPage - 1) * itemPage + index + 1;
       }
     },
     {
@@ -187,10 +200,22 @@ const StudentList = () => {
     reset();
   };
 
+  const onChangePagination = async (currentPage, itemPage) => {
+    setItemPage(itemPage);
+    setCurrentPage(currentPage);
+  };
+
   return (
     <div className="p-8">
       <SectionHeaderWithSearch title={'Danh sách Sinh viên'} placeholder={'Tìm sinh viên'} setQuery={setQuery} />
-      <CustomTable columns={columns} dataSource={studentListQuery} isPagination={false} />
+      <CustomTable
+        columns={columns}
+        dataSource={studentListQuery}
+        paginationData={{ numPage: studentList?.totalPages, currentPage }}
+        isPagination={true}
+        onChangePagination={onChangePagination}
+        loading={isFetching}
+      />
       <Modal open={isModalDelete} onCancel={() => setIsModalDelete(false)} footer={false}>
         <div className="flex justify-center flex-col gap-3">
           <div>

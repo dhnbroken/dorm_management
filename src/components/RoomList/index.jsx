@@ -1,6 +1,6 @@
 import { UsersIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { deleteRoom, getAllRooms, getDormitory } from 'API/room';
@@ -10,13 +10,11 @@ import { DeleteButton } from 'components/Button/DeleteButton';
 import { Modal } from 'antd';
 import WarningIcon from 'components/icons/Warning';
 import { toast } from 'react-toastify';
-import { GlobalContextProvider } from 'context/GlobalContext';
 import SectionHeaderWithSearch from 'components/SectionHeader/SectionHeaderWithSearch';
 import { useDebounce } from 'utils/hook/useDebounce';
 
 export default function RoomList() {
   const queryClient = useQueryClient();
-  const { profileData } = useContext(GlobalContextProvider);
 
   const { data: dormDataReturned } = useQuery({
     queryKey: ['all_dorms'],
@@ -92,8 +90,7 @@ export default function RoomList() {
   const handleDeleteRoom = () => {
     deleteSelectedRoom.mutate({
       id: selectedRoom?.roomId,
-      dormitoryId: selectedRoom?.dormId,
-      CMND: profileData?.CMND
+      dormitoryId: selectedRoom?.dormId
     });
   };
   return (

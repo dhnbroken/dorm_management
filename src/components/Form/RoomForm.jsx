@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import InputWithLabel from 'components/Input/InputWithLabel';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -12,12 +11,7 @@ const RoomForm = () => {
   const [floor, setFloor] = useState('1');
   const [dorm, setDorm] = useState({});
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const { data: allDorms } = useQuery({
     queryKey: ['all_dorms'],

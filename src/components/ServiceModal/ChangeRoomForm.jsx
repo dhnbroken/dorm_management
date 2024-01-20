@@ -42,12 +42,16 @@ const ChangeRoomForm = ({ title, onCancel }) => {
     {
       title: 'Phòng',
       dataIndex: 'Title',
-      align: 'center'
+      align: 'center',
+      width: '70px'
     },
     {
       title: 'Giá',
       dataIndex: 'Price',
-      align: 'center'
+      align: 'center',
+      render: (_, record) => {
+        return `${record?.Price?.toLocaleString()}đ`;
+      }
     },
     {
       title: 'Loại',
@@ -117,7 +121,8 @@ const ChangeRoomForm = ({ title, onCancel }) => {
         roomId: selectedRoom?._id,
         roomTitle: selectedRoom?.Title,
         dateOut: profileData?.room?.dateOut,
-        status: 0
+        status: 0,
+        price: selectedRoom?.Price
       }
     };
 
@@ -198,6 +203,12 @@ const ChangeRoomForm = ({ title, onCancel }) => {
             <InputWithLabel label="CCCD" defaultValue={profileData?.CMND} disabled />
             <InputWithLabel label="Tên sinh viên" defaultValue={profileData?.HoTen} disabled />
             <InputWithLabel label="Phòng" defaultValue={profileData?.room?.roomTitle} disabled />
+            <InputWithLabel
+              label="Chênh lệch"
+              defaultValue={`${profileData?.room?.price?.toLocaleString()}đ`}
+              disabled
+              value={`${selectedRoom ? (selectedRoom?.Price - profileData?.room?.price).toLocaleString() : 0}đ`}
+            />
           </div>
           <div className="col-span-4">
             <div className="flex items-center gap-2">

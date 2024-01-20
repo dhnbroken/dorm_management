@@ -18,6 +18,22 @@ img {
   overflow: hidden;
 }
 
+/* Scrollbar */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #828282;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+
 /* Headings */
 .first-title {
   font-family: 'Dancing Script', cursive !important;

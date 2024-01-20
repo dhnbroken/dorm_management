@@ -32,7 +32,7 @@ export const updateRoom = async ({ id, data }) => {
   return res.data;
 };
 
-export const deleteRoom = async ({ id, dormitoryId, CMND }) => {
-  const res = await axiosInstance.delete(`/rooms/${id}/${dormitoryId}`, { params: { dormitoryId }, data: { CMND } });
+export const deleteRoom = async ({ id, dormitoryId }) => {
+  const res = await axiosInstance.delete(`/rooms/${id}/${dormitoryId}`);
   return res.data;
 };

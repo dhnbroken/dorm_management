@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import ProfileForm from 'components/Form/ProfileForm';
 import StudentProfileHeader from 'components/SectionHeader/StudentProfileHeader';
 import { GlobalContextProvider } from 'context/GlobalContext';

@@ -23,16 +23,6 @@ const BillListPage = () => {
   const queryClient = useQueryClient();
   const { profileData } = useContext(GlobalContextProvider);
 
-  const { data: allBills } = useQuery({
-    queryKey: ['all_bills'],
-    queryFn: getAllBills
-  });
-
-  const { data: allUser } = useQuery({
-    queryKey: ['get_all_user'],
-    queryFn: getAllStudent
-  });
-
   const [isModalEdit, setIsModalEdit] = useState(false);
   const [editData, setEditData] = useState({});
   const [newBillModal, setNewBillModal] = useState(false);
@@ -46,9 +36,26 @@ const BillListPage = () => {
   const [query, setQuery] = useState('');
   const debouncedValue = useDebounce(query, 500);
 
+  const [itemPage, setItemPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const {
+    data: allBills,
+    refetch,
+    isFetching
+  } = useQuery({
+    queryKey: ['all_bills'],
+    queryFn: () => getAllBills({ itemPage, currentPage })
+  });
+
+  const { data: allUser } = useQuery({
+    queryKey: ['get_all_user'],
+    queryFn: getAllStudent
+  });
+
   useEffect(() => {
     if (allUser) {
-      const newArray = allUser?.map((user) => ({
+      const newArray = allUser?.users?.map((user) => ({
         value: JSON.stringify(user),
         label: user.HoTen
       }));
@@ -58,12 +65,19 @@ const BillListPage = () => {
   }, [allUser]);
 
   useEffect(() => {
-    setBillDataQuery(allBills);
+    if (allBills) {
+      setBillDataQuery(allBills?.bills);
+    }
   }, [allBills]);
 
   useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemPage, currentPage]);
+
+  useEffect(() => {
     if (allBills) {
-      let updatedList = [...allBills];
+      let updatedList = [...allBills?.bills];
       updatedList = updatedList?.filter((item) => {
         return deepSearch(item, debouncedValue);
       });
@@ -91,7 +105,7 @@ const BillListPage = () => {
       width: 50,
       align: 'center',
       render: (value, record, index) => {
-        return index + 1;
+        return (currentPage - 1) * itemPage + index + 1;
       }
     },
     {
@@ -238,13 +252,25 @@ const BillListPage = () => {
     });
   };
 
+  const onChangePagination = async (currentPage, itemPage) => {
+    setItemPage(itemPage);
+    setCurrentPage(currentPage);
+  };
+
   return (
     <div className="p-8">
       <SectionHeaderWithSearch title={'Danh sách hóa đơn'} placeholder={'Tìm hóa đơn'} setQuery={setQuery} />
       <div className="text-end mb-2">
         <PrimaryButton text={'Tạo hóa đơn'} Icon={PlusIcon} onClick={() => setNewBillModal(true)} />
       </div>
-      <CustomTable columns={columns} dataSource={billDataQuery} isPagination={false} />
+      <CustomTable
+        columns={columns}
+        dataSource={billDataQuery}
+        onChangePagination={onChangePagination}
+        paginationData={{ numPage: allBills?.totalPages, currentPage }}
+        isPagination={true}
+        loading={isFetching}
+      />
       <Modal open={isModalEdit} onCancel={() => setIsModalEdit(false)} footer={false}>
         <div className="text-center w-full text-xl font-semibold my-3">Sửa thông tin hóa đơn</div>
         <form className="flex justify-center flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>

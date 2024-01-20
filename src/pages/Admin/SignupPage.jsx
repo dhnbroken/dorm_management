@@ -83,6 +83,7 @@ const SignupPage = () => {
         room: {
           roomId: selectedRoom._id,
           roomTitle: selectedRoom?.Title,
+          price: selectedRoom?.Price,
           dateIn: moment().toDate(),
           dateOut: moment().add(6, 'months').toDate(),
           status: 0

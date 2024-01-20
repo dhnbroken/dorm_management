@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRequestExtendChange, requestExtendRoom } from 'API/requests';
+import { getRoom } from 'API/room';
 import { Modal } from 'antd';
 import CustomTable from 'components/CustomTable';
-import DatePicker from 'components/DatePicker';
+
 import InputWithLabel from 'components/Input/InputWithLabel';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import moment from 'moment';
@@ -18,7 +19,12 @@ const ExtendForm = ({ title, onCancel }) => {
   const [openHistory, setOpenHistory] = useState(false);
   const { handleSubmit } = useForm();
 
-  const [newDateOut, setNewDateOut] = useState();
+  const [newDateOut, setNewDateOut] = useState(1);
+
+  const { data: roomData } = useQuery({
+    queryKey: ['get_room_by_id'],
+    queryFn: () => getRoom(profileData?.room?.roomId)
+  });
 
   const onSubmit = () => {
     if (newDateOut) {
@@ -26,12 +32,14 @@ const ExtendForm = ({ title, onCancel }) => {
         userId: profileData._id,
         userDetail: {
           CMND: profileData?.CMND,
-          HoTen: profileData?.HoTen
+          HoTen: profileData?.HoTen,
+          Mssv: profileData?.Mssv
         },
+        extendPrice: roomData?.Price * newDateOut,
         roomId: profileData?.room?.roomId,
         roomTitle: profileData?.room?.roomTitle,
         dateOut: profileData?.room?.dateOut,
-        newDateOut: moment(newDateOut, 'DD/MM/YYYY').toDate()
+        newDateOut: moment(profileData?.room?.dateOut).add(newDateOut, 'months').toDate()
       };
 
       handleExtend.mutate({
@@ -122,8 +130,15 @@ const ExtendForm = ({ title, onCancel }) => {
             disabled
           />
           <div className="flex flex-col gap-1">
-            <label className="block text-sm font-medium leading-6 text-gray-900">Ngày muốn gia hạn</label>
-            <DatePicker setSelectedDate={setNewDateOut} className={'!max-w-full'} />
+            <label className="block text-sm font-medium leading-6 text-gray-900">Muốn gia hạn</label>
+            <select
+              className={`custom_select_field w-full !max-w-full disabled:bg-slate-100/70 disabled:cursor-not-allowed`}
+              onChange={(e) => setNewDateOut(e.target.value)}
+            >
+              <option value={1}>1 tháng</option>
+              <option value={3}>3 tháng</option>
+              <option value={6}>6 tháng</option>
+            </select>
           </div>
           {/* <TextAreaField label="Note" rows={3} className="w-full rounded" register={register} registerKey={'note'} /> */}
         </div>

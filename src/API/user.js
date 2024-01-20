@@ -1,7 +1,7 @@
 const { default: axiosInstance } = require('./axiosInstance');
 
-export const getAllStudent = async () => {
-  const res = await axiosInstance.get('/user');
+export const getAllStudent = async ({ itemPage, currentPage }) => {
+  const res = await axiosInstance.get('/user', { params: { itemPage, currentPage } });
   return res.data;
 };
 

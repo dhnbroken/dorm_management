@@ -1,7 +1,7 @@
 import axiosInstance from './axiosInstance';
 
-export const getAllBills = async () => {
-  const res = await axiosInstance.get('/hd');
+export const getAllBills = async ({ itemPage, currentPage }) => {
+  const res = await axiosInstance.get('/hd', { params: { itemPage, currentPage } });
   return res.data;
 };
 

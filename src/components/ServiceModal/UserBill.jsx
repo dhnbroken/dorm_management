@@ -70,7 +70,6 @@ const UserBill = ({ title }) => {
       align: 'center',
       width: '120px',
       render: (_, record) => {
-        console.log(record);
         return <div>{moment(record?.billDetails?.dateOut).format('DD/MM/YYYY')}</div>;
       }
     },

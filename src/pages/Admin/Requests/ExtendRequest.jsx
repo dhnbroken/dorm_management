@@ -9,6 +9,7 @@ import { useDebounce } from 'utils/hook/useDebounce';
 import ModalReason from './ModalReason';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import { getColorStatus } from 'utils/shared';
+import { createBill } from 'API/bill';
 
 const ExtendRequest = () => {
   const { profileData } = useContext(GlobalContextProvider);
@@ -24,6 +25,8 @@ const ExtendRequest = () => {
   const [updateData, setUpdateData] = useState({});
   const [reason, setReason] = useState('');
   const [isOpenReason, setIsOpenReason] = useState(false);
+
+  const [dataBill, setDataBill] = useState({});
 
   const debouncedValue = useDebounce(query, 500);
 
@@ -83,6 +86,13 @@ const ExtendRequest = () => {
       }
     },
     {
+      title: 'Ngày yêu cầu',
+      dataIndex: 'createdAt',
+      render: (_, record) => {
+        return moment(record?.createdAt).format('DD/MM/YYYY');
+      }
+    },
+    {
       title: 'Trạng thái',
       dataIndex: 'status',
       render: (_, record) => {
@@ -96,7 +106,13 @@ const ExtendRequest = () => {
         return (
           record.requestStatus === 0 && (
             <div className="flex gap-3 items-center">
-              <PrimaryButton text={'Duyệt'} onClick={() => updateRequest(record._id, record.userId, 1)} />
+              <PrimaryButton
+                text={'Duyệt'}
+                onClick={() => {
+                  setDataBill(record);
+                  updateRequest(record._id, record.userId, 1);
+                }}
+              />
               <PrimaryButton
                 text={'Từ chối'}
                 className={'!bg-red-500 !hover:bg-red-400'}
@@ -127,9 +143,37 @@ const ExtendRequest = () => {
   const handleUpdateRequest = useMutation({
     mutationFn: updateRequestExtendRoom,
     onSuccess: () => {
+      onCreateBill();
       refetch();
     }
   });
+
+  const handleCreateBill = useMutation({
+    mutationFn: createBill,
+    onSuccess: () => {
+      // toast.success('Tạo thành công');
+    }
+  });
+
+  const onCreateBill = () => {
+    const data = {
+      title: 'Gia hạn phòng',
+      price: dataBill?.extendPrice,
+      dateIn: moment(dataBill?.dateOut).toDate(),
+      dateOut: moment(dataBill?.newDateOut).toDate(),
+      roomId: dataBill?.roomId,
+      status: 0,
+      CMND: dataBill?.userDetail?.CMND,
+      userId: dataBill?.userId,
+      Mssv: dataBill?.userDetail?.Mssv,
+      roomName: dataBill?.roomTitle,
+      updatedBy: profileData?.HoTen,
+      createdBy: profileData?.HoTen
+    };
+    handleCreateBill.mutate({
+      data
+    });
+  };
 
   return (
     <div>
