@@ -85,7 +85,7 @@ const SignupPage = () => {
           roomTitle: selectedRoom?.Title,
           price: selectedRoom?.Price,
           dateIn: moment().toDate(),
-          dateOut: moment().add(6, 'months').toDate(),
+          dateOut: moment().add(1, 'months').toDate(),
           status: 0
         }
       });
