@@ -3,7 +3,7 @@ import axios from 'axios';
 //axios to creating BaseUrl
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  withCredentials: 'include',
+  withCredentials: true,
   headers: { 'Access-Control-Allow-Origin': '*' }
 });
 

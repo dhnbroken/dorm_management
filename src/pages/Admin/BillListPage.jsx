@@ -109,6 +109,10 @@ const BillListPage = () => {
       }
     },
     {
+      title: 'Hóa đơn',
+      dataIndex: 'title'
+    },
+    {
       title: 'Sinh viên',
       dataIndex: 'billDetails.Student',
       render: (_, record) => {
