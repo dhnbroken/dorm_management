@@ -8,7 +8,7 @@ export default function DatePicker({
   defaultValue,
   isStudent,
   className,
-  picker = '',
+  picker = 'date',
   placeHolder = 'DD/MM/YYYY',
   format = 'DD/MM/YYYY'
 }) {
